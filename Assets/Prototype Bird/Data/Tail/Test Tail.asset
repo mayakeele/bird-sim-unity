@@ -97,3 +97,4 @@ MonoBehaviour:
   alphaStall: 40
   CDParasitic: 0.01
   CDMax: 2
+  sideslipCoefficientSlope: 0.03

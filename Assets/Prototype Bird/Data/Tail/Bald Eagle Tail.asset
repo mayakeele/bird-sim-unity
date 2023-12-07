@@ -88,12 +88,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   generateCurves: 0
-  mainChord: 0.18
-  minSpreadAngle: 35
+  mainChord: 0.2
+  minSpreadAngle: 30
   maxSpreadAngle: 160
   liftEfficiency: 1
   vortexLiftSlopeMultiplier: 1.5
   alphaVortex: 18
   alphaStall: 35
-  CDParasitic: 0
+  CDParasitic: 0.01
   CDMax: 2
+  sideslipCoefficientSlope: 0.053

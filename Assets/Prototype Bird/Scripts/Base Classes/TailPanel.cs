@@ -56,21 +56,24 @@ public class TailPanel
 
 
     public Vector3[] CalculateAerodynamicLoads(Vector3 panelVelocityLocal, float density) {
-        // Returns a float array with two values: [0] is the lift force, [1] is the drag force
+        // Returns a float array with two values: [0] is the lift force, [1] is the drag force, [2] is the side slip force
 
 
-        float alpha = Aerodynamics.Alpha(panelVelocityLocal, forward, up, out Vector3 planeVelocity);
-        Debug.Log(alpha);
-        float vSquared = planeVelocity.sqrMagnitude;
-        float area = tailData.mainChord * spreadAngle * Mathf.Deg2Rad;
+        float alpha = Aerodynamics.Alpha(panelVelocityLocal, forward, up, out Vector3 velocityAlpha);
+        float beta = Aerodynamics.Beta(panelVelocityLocal, forward, left, out Vector3 velocityBeta);
+        float vSqrAlpha = velocityAlpha.sqrMagnitude;
+        float vSqrBeta = velocityBeta.sqrMagnitude;
+        float area = 0.5f * Mathf.Pow(tailData.mainChord, 2) * spreadAngle * Mathf.Deg2Rad;
 
-        float liftForce = tailData.LiftForce(alpha, vSquared, span, density);
-        float dragForce = tailData.DragForce(alpha, vSquared, area, density, liftForce);
+        float liftForce = tailData.LiftForce(alpha, vSqrAlpha, span, density);
+        float dragForce = tailData.DragForce(alpha, vSqrAlpha, area, density, liftForce);
+        float sideslipForce = tailData.SideslipForce(beta, vSqrBeta, area, density);
 
         Vector3 liftDirection = Vector3.Cross(left, panelVelocityLocal).normalized;
         Vector3 dragDirection = -panelVelocityLocal.normalized;
+        Vector3 sideslipDirection = Vector3.Cross(panelVelocityLocal, up).normalized;
 
-        return new Vector3[] { liftForce * liftDirection, dragForce * dragDirection};
+        return new Vector3[] { liftForce * liftDirection, dragForce * dragDirection, sideslipForce * sideslipDirection};
     }
 
 

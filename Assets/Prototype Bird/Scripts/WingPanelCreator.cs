@@ -4,7 +4,8 @@ using UnityEngine;
 public class WingPanelCreator : MonoBehaviour
 {
 
-    public GameObject quadPrefab;
+    public GameObject wingPrefab;
+    public GameObject tailPrefab;
     public List<GameObject> quadObjects;
     
 
@@ -89,7 +90,7 @@ public class WingPanelCreator : MonoBehaviour
                 WingPanel wingPanel = new WingPanel(inSection.airfoil, panelChord, panelArea, panelPosition, newForward, newUp);
                 wingPanels.Add(wingPanel);
 
-                CreateDebugQuad(wingPanel, rootTransform);
+                CreateWingQuad(wingPanel, rootTransform);
             }
         }
 
@@ -97,17 +98,29 @@ public class WingPanelCreator : MonoBehaviour
     }
 
 
-    public void CreateDebugQuad(WingPanel panel, Transform rootTransform) {
+    public void CreateWingQuad(WingPanel panel, Transform rootTransform) {
         float chord = panel.chord;
         float width = panel.area / chord;
         Quaternion panelRotation = Quaternion.LookRotation(panel.forward, panel.up);
 
-        GameObject quad = Instantiate(quadPrefab, rootTransform);
+        GameObject quad = Instantiate(wingPrefab, rootTransform);
         quad.transform.SetLocalPositionAndRotation(panel.positionRoot, panelRotation);
         quad.transform.localScale = new Vector3(width, 1, chord);
 
         quadObjects.Add(quad);
     }
+
+    public void CreateTailQuad(TailPanel panel, Transform rootTransform) {
+        Quaternion panelRotation = Quaternion.LookRotation(panel.forward, panel.up);
+
+        GameObject quad = Instantiate(tailPrefab, rootTransform);
+        quad.transform.SetLocalPositionAndRotation(Vector3.zero, panelRotation);
+        quad.transform.localScale = new Vector3(panel.span, 1, panel.tailData.mainChord);
+
+        quadObjects.Add(quad);
+    }
+
+
 
     public void DestroyDebugQuads() {
         foreach (GameObject quad in quadObjects){

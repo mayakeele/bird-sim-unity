@@ -26,18 +26,18 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: -40
-      value: -1.37
+      value: -0
       inSlope: 0
-      outSlope: 0.0411
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: -20
-      value: -0.548
-      inSlope: 0.0411
-      outSlope: 0.0274
+      value: -0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -45,25 +45,25 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.0274
-      outSlope: 0.0274
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 20
-      value: 0.548
-      inSlope: 0.0274
-      outSlope: 0.0411
+      value: 0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 40
-      value: 1.37
-      inSlope: 0.0411
+      value: 0
+      inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
@@ -91,9 +91,10 @@ MonoBehaviour:
   mainChord: 0
   minSpreadAngle: 10
   maxSpreadAngle: 160
-  liftEfficiency: 1
+  liftEfficiency: 0
   vortexLiftSlopeMultiplier: 1.5
   alphaVortex: 20
   alphaStall: 40
   CDParasitic: 0
   CDMax: 2
+  sideslipCoefficientSlope: 0

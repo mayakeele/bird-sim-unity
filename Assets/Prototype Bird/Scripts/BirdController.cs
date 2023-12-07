@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditor;
 
 public class BirdController : MonoBehaviour
 {
@@ -10,24 +11,37 @@ public class BirdController : MonoBehaviour
     public bool inWindTunnel;
     public Vector3 testVelocity;
     public Vector3 testAngularVelocity;
+    [Space]
 
+
+    // Control Ranges
+    public ControlRange tailPitchRange;
+    public ControlRange tailYawRange;
+    public ControlRange tailRollRange;
+    public ControlRange wingtipTwistRange;
+    public int wingtipSectionIndex;
+    [Space]
 
     // Wing & Tail Data
     public WingData wingData;
     public TailData tailData;
+    [Space]
 
-    // Component references
+    // Geometry
     public Rigidbody rb;
     public Transform cg;
-
+    [Space]
+    public Transform wingRoot;
+    public Transform tailRoot;
+    [Space]
+    public BirdInputActions inputActionAsset;
+    public BirdInputActions.GameplayActions input;
     public WingPanelCreator wingPanelCreator;
     public BirdAnimator animator;
     public CameraFollow cameraFollow;
-    
+    [Space]
 
-    // Geometry
-    public Transform wingRoot;
-    public Transform tailRoot;
+
 
 
 
@@ -37,11 +51,6 @@ public class BirdController : MonoBehaviour
     const float deg2Rad = Mathf.Deg2Rad;
     const float rad2Deg = Mathf.Rad2Deg;
 
-
-
-    // Tail Properties
-    float tailMinArea;
-    float tailMaxArea;
 
 
     // Input Settings
@@ -97,6 +106,7 @@ public class BirdController : MonoBehaviour
 
     Vector3 tailLiftForce;
     Vector3 tailDragForce;
+    Vector3 tailSlipForce;
     Vector3 tailMoment;
 
 
@@ -105,17 +115,10 @@ public class BirdController : MonoBehaviour
     float pitchInput = 0;
     float rollInput = 0;
     float yawInput = 0;
-    bool flapInput = false;
+    float flapInput = 0;
     bool brakeInput = false;
     Vector2 lookInput = Vector2.zero;
 
-
-    // Control variables
-    float[] wingDihedral = new float[] { 8, -8 };
-    float[] wingSweep = new float[] { -4, 10 };
-
-    float[] wingTwistL = new float[] { 3, 3 };
-    float[] wingTwistR = new float[] { 3, 3 };
 
     // temp area
     Vector3 windVelocity = Vector3.zero;
@@ -123,19 +126,25 @@ public class BirdController : MonoBehaviour
 
 
 
+    private void Awake() {
+        // Setup input system
+        inputActionAsset = new BirdInputActions();
+        input = inputActionAsset.gameplay;
+    }
 
 
     void Start() {
+        
+
         // Create wing sections from geometry data
         wingSectionsL = wingData.CreateWingSections();
         wingSectionsR = wingData.CreateWingSections();
 
-        // Create wing panels from wing sections
-        RebuildWingPanels();
-
         // Create tail panel
         tailPanel = new TailPanel(tailData, tailRoot);
 
+        // Create wing panels from wing sections
+        RecalculateWingPanels();
 
         UpdateCG();
 
@@ -147,14 +156,28 @@ public class BirdController : MonoBehaviour
 
     void FixedUpdate() {
 
-        // Get user input and apply to geometry
-
-
         // Update the state of the bird
         UpdateVelocities();
-        UpdateCG();
 
-        RebuildWingPanels();
+
+        // Get user input and apply to geometry
+        pitchInput = input.Pitch.ReadValue<float>();
+        rollInput = input.Roll.ReadValue<float>();
+        flapInput = input.Flap.ReadValue<float>();
+
+        Debug.Log(pitchInput);
+
+        float wingtipTwistL = wingtipTwistRange.GetAngle(rollInput);
+        float wingtipTwistR = wingtipTwistRange.GetAngle(-rollInput);
+        float tailPitch = tailPitchRange.GetAngle(pitchInput);
+
+        wingSectionsL[wingtipSectionIndex].twistLocal = wingtipTwistL;
+        wingSectionsR[wingtipSectionIndex].twistLocal = wingtipTwistR;
+
+        tailPanel.SetAngles(tailPitch, 0, 0);
+
+        RecalculateWingPanels();
+
 
 
         // Perform aerodynamic calculations
@@ -166,13 +189,20 @@ public class BirdController : MonoBehaviour
         wingMoment = wingLoads[2];
 
         tailLiftForce = tailLoads[0];
-        tailDragForce = tailLoads[1];   
-        tailMoment = tailLoads[2];
+        tailDragForce = tailLoads[1];
+        tailSlipForce = tailLoads[2];
+        tailMoment = tailLoads[3];
 
-        rb.AddRelativeForce(wingLiftForce + wingDragForce + tailLiftForce + tailDragForce);
+        Vector3 thrustForce = flapInput * rb.mass * g * Vector3.forward;
+
+        rb.AddRelativeForce(wingLiftForce + wingDragForce + tailLiftForce + tailDragForce + tailSlipForce + thrustForce);
         rb.AddRelativeTorque(wingMoment + tailMoment);
 
+
         
+        UpdateCG();
+
+
         //Debug.Log("Lift (N): " + wingLiftForce.magnitude);
         //Debug.Log("Drag (N): " + netDragForce.magnitude);
         //Debug.Log("Moment (Nm): " + netMoment.magnitude);
@@ -183,27 +213,31 @@ public class BirdController : MonoBehaviour
         // Wing lift drag moment vectors
         Debug.DrawRay(cg.position, cg.TransformVector(wingLiftForce), Color.green);
         Debug.DrawRay(cg.position, cg.TransformVector(wingDragForce), Color.red);
-        Debug.DrawRay(cg.position, cg.TransformVector(wingMoment), Color.blue);
+        Debug.DrawRay(cg.position, cg.TransformVector(wingMoment), Color.cyan);
 
         // Tail lift drag moment vectors
         Vector3 tailPosition = tailRoot.position + tailRoot.TransformVector(tailPanel.ACPosition);
         Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailLiftForce), Color.green);
         Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailDragForce), Color.red);
-        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailMoment), Color.blue);
+        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailSlipForce), Color.magenta);
+        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailMoment), Color.cyan);
     }
 
 
 
 
-    private void RebuildWingPanels() {
+    private void RecalculateWingPanels() {
 
         // Clear old debug quads
         wingPanelCreator.DestroyDebugQuads();
 
-        // Clear old panels and create new ones, populate list
+        // Create new ones, populate list
         wingPanels = new List<WingPanel>();
         wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true));
         wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false));
+
+        // also make tail panel
+        wingPanelCreator.CreateTailQuad(tailPanel, tailRoot);
     }
 
 
@@ -262,13 +296,14 @@ public class BirdController : MonoBehaviour
         Vector3[] tailLoads = tail.CalculateAerodynamicLoads(cgVelocityLocal + rotationVelocity, localAirDensity);
         Vector3 liftForce = tailLoads[0];
         Vector3 dragForce = tailLoads[1];
+        Vector3 slipForce = tailLoads[2];
 
 
         // calculate moment around cg as cross product of lift&drag w panel position
-        Vector3 netMoment = Vector3.Cross(tail.ACPosition + cgToRoot, liftForce + dragForce);
+        Vector3 netMoment = Vector3.Cross(panelPosition, liftForce + dragForce + slipForce);
         
 
-        return new Vector3[] { liftForce, dragForce, netMoment };
+        return new Vector3[] { liftForce, dragForce, slipForce, netMoment };
     }
 
 
@@ -280,7 +315,7 @@ public class BirdController : MonoBehaviour
 
         //velocityWorld = rb.velocity;
         velocityWorld = inWindTunnel ? testVelocity : rb.velocity;
-        velocityLocal = cg.InverseTransformDirection(velocityWorld);
+        velocityLocal = cg.InverseTransformVector(velocityWorld);
 
         angularVelocityWorld = rb.angularVelocity;
         angularVelocityLocal = cg.InverseTransformVector(angularVelocityWorld);
@@ -298,9 +333,14 @@ public class BirdController : MonoBehaviour
 
 
 
+    private void OnEnable() {
+        input.Enable();
+    }
+    private void OnDisable() {
+        input.Disable();
+    }
 
-
-    // Input Events
+    /*// Input Events
     public void OnPitchInput(InputAction.CallbackContext context) {
         float i = -1 * context.action.ReadValue<float>();
         i = Mathf.Abs(i) > pitchDeadzone ? i : 0;
@@ -328,7 +368,7 @@ public class BirdController : MonoBehaviour
     public void OnLookInput(InputAction.CallbackContext context) {
         Vector2 i = context.action.ReadValue<Vector2>();
         lookInput = i.sqrMagnitude > lookDeadzoneSqr ? i : Vector2.zero;
-    }
+    }*/
 
 
 }

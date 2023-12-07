@@ -10,27 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f41d129d4e62dc4ea002ba54a65c343, type: 3}
-  m_Name: Eagle Wing Data
+  m_Name: Flying Wing
   m_EditorClassIdentifier: 
   wingSectionData:
-  - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
-    chord: 0.23
+  - airfoil: {fileID: 11400000, guid: 55b72344193cd8a43a12adb1e05d37d7, type: 2}
+    chord: 0.6
     boneLength: 0
     initialDihedralLocal: 0
     initialSweepLocal: 0
     initialTwistLocal: 0
     numPanelsInward: 0
-  - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
+  - airfoil: {fileID: 11400000, guid: 55b72344193cd8a43a12adb1e05d37d7, type: 2}
     chord: 0.2
-    boneLength: 0.43
+    boneLength: 2
     initialDihedralLocal: 10
-    initialSweepLocal: 5
-    initialTwistLocal: 0
-    numPanelsInward: 12
-  - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
-    chord: 0.06
-    boneLength: 0.29
-    initialDihedralLocal: 0
-    initialSweepLocal: 3
-    initialTwistLocal: 0
-    numPanelsInward: 8
+    initialSweepLocal: 30
+    initialTwistLocal: -4
+    numPanelsInward: 16

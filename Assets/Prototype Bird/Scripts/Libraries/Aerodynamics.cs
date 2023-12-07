@@ -41,8 +41,17 @@ public static class Aerodynamics
         float beta = Mathf.Asin(-localVelocity.x / localVelocity.magnitude);
         return beta * rad2Deg;
     }
+    public static float Beta(Vector3 velocity, Vector3 forward, Vector3 left, out Vector3 planeVelocity) {
+        Vector3 planeNormal = Vector3.Cross(left, forward);
+        Vector3 projectedVelocity = Vector3.ProjectOnPlane(velocity, planeNormal);
+        planeVelocity = projectedVelocity;
 
-    
+        float beta = Vector3.Angle(projectedVelocity, forward);
+        float sign = Mathf.Sign(Vector3.Dot(projectedVelocity, left));
+
+        return beta * sign;
+    }
+
 
 
 

@@ -28,6 +28,10 @@ public class TailData : ScriptableObject
     public float CDParasitic = 0.01f;
     public float CDMax = 2.0f;
 
+    [Space]
+    [Header("Sideslip Properties")]
+    public float sideslipCoefficientSlope = 0.03f;
+
 
 
     public AnimationCurve GenerateLiftCurve() {
@@ -96,13 +100,13 @@ public class TailData : ScriptableObject
     public float Span(float spreadPercent) {
         float angle = SpreadAngle(spreadPercent);
 
-        return 2 * Mathf.Sin(angle * 0.5f * Mathf.Deg2Rad);
+        return mainChord * 2*Mathf.Sin(0.5f * angle * Mathf.Deg2Rad);
     }
 
     public float CPDistance(float spreadPercent) {
         float angle = SpreadAngle(spreadPercent);
 
-        return 0.6667f * Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad);
+        return mainChord * 0.6667f * Mathf.Cos(0.5f * angle * Mathf.Deg2Rad);
     }
 
 
@@ -131,6 +135,11 @@ public class TailData : ScriptableObject
             float pressureDrag = 0.5f * density * vSquared * tailArea * CDMax;
             return pressureDrag + parasiticDrag;
         }
+    }
+
+    public float SideslipForce(float betaDeg, float vSquared, float area, float density) {
+        float CS = -sideslipCoefficientSlope * betaDeg;
+        return 0.5f * density * vSquared * area * CS;
     }
 
 }

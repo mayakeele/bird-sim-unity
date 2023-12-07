@@ -1,0 +1,129 @@
+{
+    "name": "Bird Input Actions",
+    "maps": [
+        {
+            "name": "gameplay",
+            "id": "0b4e59e4-b1b0-43ff-b63d-67d22ed463d7",
+            "actions": [
+                {
+                    "name": "Pitch",
+                    "type": "Value",
+                    "id": "a99277a8-8fa2-4f9d-a687-f24eb34f4f26",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Roll",
+                    "type": "Value",
+                    "id": "a5db1687-c3b8-4e19-bd96-cc5c6019184e",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Flap",
+                    "type": "Value",
+                    "id": "709a40c2-bf8e-4e54-a62e-4b14356cb6f4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "32250351-52cc-4c4d-b0d4-ee0880f13f87",
+                    "path": "<Gamepad>/leftStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19664bfb-90f2-4839-9ffa-9745096f86f1",
+                    "path": "<Joystick>/stick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "51265b46-59c1-4a49-a7f3-b797d6df6543",
+                    "path": "<HID::Logitech Logitech Extreme 3D>/stick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb508a0d-cd21-4701-a6e4-421b93707d30",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4c870c2c-af7f-4335-a076-9ef28d9cffcf",
+                    "path": "<Joystick>/stick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "15ebd65d-5c8f-4118-a623-02aefc2ec13f",
+                    "path": "<HID::Logitech Logitech Extreme 3D>/stick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "04ef9c43-a22c-49ff-bc36-63886bab64a7",
+                    "path": "<Joystick>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Flap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79834513-31ba-4223-824d-ac1f87f1d9e3",
+                    "path": "<HID::Logitech Logitech Extreme 3D>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Flap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
