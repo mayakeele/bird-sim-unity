@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEditor;
 
 public class BirdController : MonoBehaviour
 {
@@ -50,7 +47,8 @@ public class BirdController : MonoBehaviour
     const float localAirDensity = 1.225f; // Sea level air density (kg/m^3)
     const float deg2Rad = Mathf.Deg2Rad;
     const float rad2Deg = Mathf.Rad2Deg;
-
+    const float maxGLoading = 10;
+    float maxForce;
 
 
     // Input Settings
@@ -134,7 +132,7 @@ public class BirdController : MonoBehaviour
 
 
     void Start() {
-        
+        maxForce = maxGLoading * g * rb.mass;
 
         // Create wing sections from geometry data
         wingSectionsL = wingData.CreateWingSections();
@@ -165,8 +163,6 @@ public class BirdController : MonoBehaviour
         rollInput = input.Roll.ReadValue<float>();
         flapInput = input.Flap.ReadValue<float>();
 
-        Debug.Log(pitchInput);
-
         float wingtipTwistL = wingtipTwistRange.GetAngle(rollInput);
         float wingtipTwistR = wingtipTwistRange.GetAngle(-rollInput);
         float tailPitch = tailPitchRange.GetAngle(pitchInput);
@@ -195,10 +191,15 @@ public class BirdController : MonoBehaviour
 
         Vector3 thrustForce = flapInput * rb.mass * g * Vector3.forward;
 
-        rb.AddRelativeForce(wingLiftForce + wingDragForce + tailLiftForce + tailDragForce + tailSlipForce + thrustForce);
-        rb.AddRelativeTorque(wingMoment + tailMoment);
+        Vector3 netForce = wingLiftForce + wingDragForce + tailLiftForce + tailDragForce + tailSlipForce + thrustForce;
+        netForce = (netForce.magnitude > maxForce) ? netForce.normalized * maxForce : netForce;
+        Vector3 netMoment = wingMoment + tailMoment;
+        netMoment = (netMoment.magnitude > maxForce) ? netMoment.normalized * maxForce : netMoment;
 
+        rb.AddRelativeForce(netForce);
+        rb.AddRelativeTorque(netMoment);
 
+        //Debug.Log(netForce);
         
         UpdateCG();
 
@@ -211,7 +212,7 @@ public class BirdController : MonoBehaviour
 
     void Update() {
         // Wing lift drag moment vectors
-        Debug.DrawRay(cg.position, cg.TransformVector(wingLiftForce), Color.green);
+        /*Debug.DrawRay(cg.position, cg.TransformVector(wingLiftForce), Color.green);
         Debug.DrawRay(cg.position, cg.TransformVector(wingDragForce), Color.red);
         Debug.DrawRay(cg.position, cg.TransformVector(wingMoment), Color.cyan);
 
@@ -220,7 +221,7 @@ public class BirdController : MonoBehaviour
         Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailLiftForce), Color.green);
         Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailDragForce), Color.red);
         Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailSlipForce), Color.magenta);
-        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailMoment), Color.cyan);
+        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailMoment), Color.cyan);*/
     }
 
 

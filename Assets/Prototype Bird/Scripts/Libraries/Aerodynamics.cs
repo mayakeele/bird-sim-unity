@@ -7,15 +7,20 @@ public static class Aerodynamics
     const float deg2Rad = Mathf.Deg2Rad;
     const float rad2Deg = Mathf.Rad2Deg;
 
+    const float maxSpeedSquared = 300*300; // 300 m/s should be well below the sound barrier, or even lower for stability
+
 
     public static float LiftForce(float CL, float velocitySquared, float area, float density) {
+        velocitySquared = Mathf.Min(velocitySquared, maxSpeedSquared);
         return 0.5f * density * velocitySquared * area * CL;
     }
     public static float DragForce(float CD, float velocitySquared, float area, float density) {
+        velocitySquared = Mathf.Min(velocitySquared, maxSpeedSquared);
         return 0.5f * density * velocitySquared * area * CD;
     }
 
     public static float PitchingMoment(float CM, float velocitySquared, float area, float chord, float density) {
+        velocitySquared = Mathf.Min(velocitySquared, maxSpeedSquared); 
         return 0.5f * density * velocitySquared * area * chord * CM;
     }
 

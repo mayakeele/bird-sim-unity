@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74df371ede910c8498549504f7833078, type: 3}
   m_Name: WingtipTwist
   m_EditorClassIdentifier: 
-  forward: 7
-  neutral: -3
-  reverse: -13
-  neutralAngle: -3
-  forwardAngleRelative: 8
-  reverseAngleRelative: -8
+  forward: 6
+  neutral: -2
+  reverse: -10
+  neutralAngle: -2
+  forwardAngleRelative: 9
+  reverseAngleRelative: -9

@@ -25,7 +25,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -49
+      time: -45
       value: -0.6
       inSlope: 0
       outSlope: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -34.5
+      time: -30.5
       value: -0.54
       inSlope: 0
       outSlope: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -20
+      time: -16
       value: -1.5
       inSlope: 0
       outSlope: 0
@@ -52,8 +52,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -14
-      value: -1.248
+      time: -10
+      value: -1.04
       inSlope: 0.104
       outSlope: 0.104
       tangentMode: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -2
+      time: 0
       value: 0
       inSlope: 0.104
       outSlope: 0.104
@@ -71,7 +71,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 10
-      value: 1.248
+      value: 1.04
       inSlope: 0.104
       outSlope: 0.104
       tangentMode: 0
@@ -130,17 +130,17 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -18
-      value: 0.144435
-      inSlope: -0.050150406
+      time: -16
+      value: 0.11817087
+      inSlope: -0.05086025
       outSlope: -0.033104226
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -2
-      value: 0.005
+      time: 0
+      value: 0.008
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -148,10 +148,10 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 14
-      value: 0.144435
+      time: 16
+      value: 0.11817087
       inSlope: 0.033104226
-      outSlope: 0.050150406
+      outSlope: 0.05086025
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -170,14 +170,14 @@ MonoBehaviour:
     m_RotationOrder: 4
   generateCurves: 0
   liftCurveSlopeLinear: 0.104
-  alphaZeroLift: -2
+  alphaZeroLift: 0
   alphaNonlinear: 10
   alphaStall: 16
   CLStall: 1.5
   alphaPostStallPeak: 45
   CLPostStallPeak: 0.6
-  parasiticDrag: 0.005
+  parasiticDrag: 0.008
   wingAspectRatio: 8
   spanwiseEfficiencyFactor: 1
   CDMax: 2
-  pitchingMoment: -0.01
+  pitchingMoment: -0.012
