@@ -164,28 +164,4 @@ public class BirdController : MonoBehaviour
     }
 
 
-
-
-    /*float VelocityToAlpha(Vector3 localVelocity) {
-        float alpha = Mathf.Atan(-localVelocity.y / localVelocity.z);
-        return alpha * rad2Deg;
-    }
-    float VelocityToBeta(Vector3 localVelocity) {
-        float beta = Mathf.Asin(-localVelocity.x / localVelocity.magnitude);
-        return beta * rad2Deg;
-    }
-
-    float CalculateLift(float v, float S, float CL) {
-        return 0.5f * rho * Mathf.Pow(v, 2) * S * CL;
-    }
-
-
-    Vector3 CalcLiftDirection(Vector3 velocityDirection) {
-        // Returns a direction vector perpendicular to velocity, in the same plane as the up vector
-        Vector3 liftDir = Vector3.ProjectOnPlane(transform.up, velocityDirection).normalized;
-        return liftDir;
-    }*/
-
-
-
 }

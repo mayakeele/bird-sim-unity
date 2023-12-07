@@ -83,22 +83,16 @@ public class WingPanelCreator : MonoBehaviour
                 Vector3 initialForward = new Vector3(0, 0, 1);
                 Vector3 initialUp = Vector3.Cross(initialForward, quarterChordAxis).normalized * -sign;
 
+                // Twist around axis perpendicular to body, NOT the quarter chord line (don't skew panels along diagonal)
                 Quaternion twistRotation = Quaternion.AngleAxis(panelTwist * sign, perpendicularAxis);
 
                 Vector3 newForward = twistRotation * initialForward;
                 Vector3 newUp = twistRotation * initialUp;
 
-                Quaternion panelRotation = Quaternion.LookRotation(newForward, newUp);
-
-                Transform panelTransform = new GameObject().transform;
-                panelTransform.SetParent(rootTransform);
-                panelTransform.SetLocalPositionAndRotation(panelPosition, panelRotation);
-
-
-                WingPanel wingPanel = new WingPanel(panelChord, panelArea, panelTransform);
+                WingPanel wingPanel = new WingPanel(inSection.airfoil, panelChord, panelArea, panelPosition, newForward, newUp);
                 wingPanels.Add(wingPanel);
 
-                CreateDebugQuad(wingPanel);
+                CreateDebugQuad(wingPanel, rootTransform);
             }
         }
 
@@ -106,12 +100,13 @@ public class WingPanelCreator : MonoBehaviour
     }
 
 
-    public void CreateDebugQuad(WingPanel panel) {
+    public void CreateDebugQuad(WingPanel panel, Transform rootTransform) {
         float chord = panel.chord;
         float width = panel.area / chord;
+        Quaternion panelRotation = Quaternion.LookRotation(panel.forward, panel.up);
 
-        GameObject quad = Instantiate(quadPrefab, panel.quarterChordTransform);
-        quad.transform.localPosition = new Vector3(0,0,-0.25f * chord);
+        GameObject quad = Instantiate(quadPrefab, rootTransform);
+        quad.transform.SetLocalPositionAndRotation(panel.position, panelRotation);
         quad.transform.localScale = new Vector3(width, 1, chord);
     }
 

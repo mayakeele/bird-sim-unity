@@ -9,10 +9,10 @@ public class WingData : ScriptableObject
 {
     [System.Serializable]
     public struct SectionData {
+        public AirfoilData airfoil;
+
         public float chord; // Chord of the airfoil at the root of this section
         public float boneLength; // Length of the line connecting this quarter-chord to the next section
-
-        public AirfoilData airfoil;
     }
 
     public SectionData[] wingSectionData;
@@ -27,7 +27,7 @@ public class WingData : ScriptableObject
 
         for(int i=0; i<numSections; i++) {
             SectionData section = wingSectionData[i];
-            wingSections.Add(new WingSection(section.chord, section.boneLength));
+            wingSections.Add(new WingSection(section.airfoil, section.chord, section.boneLength));
         }
 
         return wingSections;
