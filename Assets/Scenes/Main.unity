@@ -302,7 +302,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1153469163}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 36.762, y: 0, z: 0}
 --- !u!23 &297794188
 MeshRenderer:
@@ -384,7 +384,7 @@ Transform:
   m_Children:
   - {fileID: 196044823}
   m_Father: {fileID: 1153469163}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &361427835
 GameObject:
@@ -507,8 +507,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 433485006}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.2979698, y: -7.38, z: 1.2111874}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -516,8 +516,8 @@ Transform:
   - {fileID: 1771352479}
   - {fileID: 1753385983}
   - {fileID: 2076908961}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1153469163}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &748821414
 GameObject:
@@ -550,7 +550,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1153469163}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &748821417
 MeshRenderer:
@@ -970,8 +970,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1153469163}
-  - component: {fileID: 1153469165}
   - component: {fileID: 1153469162}
+  - component: {fileID: 1153469165}
   - component: {fileID: 1153469161}
   - component: {fileID: 1153469164}
   m_Layer: 0
@@ -1009,6 +1009,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d177ce23038cb24e8b2a205f35e0e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -5
+      value: 0
+      inSlope: 0
+      outSlope: 0.05896701
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 16.386084
+      value: 1.2610734
+      inSlope: 0.051681004
+      outSlope: 0.051681004
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0.07434586
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 21.413567
+      value: 1.4045341
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 28.822613
+      value: 0.8260579
+      inSlope: -0.07807701
+      outSlope: 0.013017767
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 39.30905
+      value: 0.9625679
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 90
+      value: 0
+      inSlope: -0.01898895
+      outSlope: 0
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   rb: {fileID: 1153469161}
   cg: {fileID: 819551324}
   animator: {fileID: 1153469164}
@@ -1028,14 +1088,16 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 819551324}
-  - {fileID: 1904600305}
+  - {fileID: 433485007}
+  - {fileID: 1365426533}
   - {fileID: 1311330353}
   - {fileID: 310279423}
+  - {fileID: 1904600305}
   - {fileID: 748821415}
   - {fileID: 2086495220}
   - {fileID: 297794186}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1153469164
 MonoBehaviour:
@@ -1064,9 +1126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439aff03b861238459a3daab185b0071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wingRootR: {fileID: 310279423}
-  wingRootL: {fileID: 1311330353}
-  wingSections:
+  wingRootR: {fileID: 1365426533}
+  wingRootL: {fileID: 1365426533}
+  wingSectionsLR:
   - {fileID: 1830797344}
   - {fileID: 1771352480}
   - {fileID: 1753385984}
@@ -1138,7 +1200,7 @@ Transform:
   m_Children:
   - {fileID: 1071643474}
   m_Father: {fileID: 1153469163}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1321329002
 GameObject:
@@ -1223,6 +1285,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321329002}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1365426532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1365426533}
+  m_Layer: 0
+  m_Name: Wings Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1365426533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365426532}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.0168, z: 0.123}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1153469163}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1684308704
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,10 +1526,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chord: 0.16
-  twistLocal: -3
   boneLength: 0.27
-  sweepLocal: 2.5
   dihedralLocal: -2
+  sweepLocal: 2.5
+  twistLocal: -3
   quarterChordPosition: {x: 0, y: 0, z: 0}
   twistAbsolute: 0
 --- !u!1 &1771352478
@@ -1484,10 +1577,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chord: 0.26
-  twistLocal: 0
   boneLength: 0.35
-  sweepLocal: -5
   dihedralLocal: 12
+  sweepLocal: -5
+  twistLocal: 0
   quarterChordPosition: {x: 0, y: 0, z: 0}
   twistAbsolute: 0
 --- !u!1 &1829127912
@@ -1618,10 +1711,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chord: 0.25
-  twistLocal: 5
-  boneLength: 0
-  sweepLocal: 0
+  boneLength: 0.065
   dihedralLocal: 0
+  sweepLocal: 0
+  twistLocal: 5
   quarterChordPosition: {x: 0, y: 0, z: 0}
   twistAbsolute: 0
 --- !u!1 &1904600304
@@ -1655,7 +1748,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1153469163}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1904600307
 MeshRenderer:
@@ -1849,10 +1942,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chord: 0.11
-  twistLocal: -6
   boneLength: 0.14
-  sweepLocal: 3
   dihedralLocal: 32
+  sweepLocal: 3
+  twistLocal: -6
   quarterChordPosition: {x: 0, y: 0, z: 0}
   twistAbsolute: 0
 --- !u!1 &2086495219
@@ -1886,7 +1979,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1153469163}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -8.848}
 --- !u!23 &2086495222
 MeshRenderer:

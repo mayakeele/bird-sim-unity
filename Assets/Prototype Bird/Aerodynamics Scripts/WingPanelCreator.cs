@@ -7,7 +7,7 @@ public class WingPanelCreator : MonoBehaviour
     public Transform wingRootR;
     public Transform wingRootL;
 
-    public List<WingSection> wingSections;
+    public List<WingSection> wingSectionsLR;
 
     public int[] numPanelsPerSection = { 5, 5 };
 
@@ -18,42 +18,29 @@ public class WingPanelCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CreateWingPanels(true, wingRootL);
-        CreateWingPanels(false, wingRootR);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        CreateWingPanels(wingSectionsLR, wingRootL, true);
+        CreateWingPanels(wingSectionsLR, wingRootR, false);
     }
 
 
 
-
-    public List<WingPanel> CreateWingPanels(bool isLeft, Transform rootTransform) {
+    public List<WingPanel> CreateWingPanels(List<WingSection> wingSections, Transform rootTransform, bool isLeft) {
         // Returns a list of Wing Panels oriented and located along the wing 
 
         int numSections = wingSections.Count;
-
-        WingSection rootSection = wingSections[0];
+        int sign = isLeft ? 1 : -1;
 
         float xPrev = 0;
         float yPrev = 0;
         float zPrev = 0;
 
-        float twistTotal = rootSection.twistLocal;
+        float twistTotal = 0;
         float sweepTotal = 0;
         float dihedralTotal = 0;
 
-        rootSection.quarterChordPosition = Vector3.zero;
-        rootSection.twistAbsolute = twistTotal;
-
-        int sign = isLeft ? 1 : -1;
-
        
         // Calculate and store relative position and orientation of each section after the root
-        for (int s = 1; s < numSections; s++) {
+        for (int s = 0; s < numSections; s++) {
             WingSection currSection = wingSections[s];
 
             twistTotal += currSection.twistLocal;

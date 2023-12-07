@@ -7,7 +7,7 @@ public class WingPanel
     public float chord;
     public float area;
 
-    public Transform quarterChordTransform; // Rotation faces
+    public Transform quarterChordTransform;
 
     public WingPanel(float chord, float area, Transform quarterChordTransform) {
         this.chord = chord;

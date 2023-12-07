@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class FlightController : MonoBehaviour
 {
-
+    public AnimationCurve curve;
 
     // Component references
     public Rigidbody rb;
