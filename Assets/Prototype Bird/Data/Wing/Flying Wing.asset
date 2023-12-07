@@ -16,14 +16,32 @@ MonoBehaviour:
   - airfoil: {fileID: 11400000, guid: 55b72344193cd8a43a12adb1e05d37d7, type: 2}
     chord: 0.6
     boneLength: 0
-    initialDihedralLocal: 0
-    initialSweepLocal: 0
-    initialTwistLocal: 0
+    fastConfiguration:
+      dihedralLocal: 0
+      sweepLocal: 45
+      twistLocal: 0
+    neutralConfiguration:
+      dihedralLocal: 8
+      sweepLocal: -5
+      twistLocal: 0
+    maneuverConfiguration:
+      dihedralLocal: -5
+      sweepLocal: -10
+      twistLocal: 0
     numPanelsInward: 0
   - airfoil: {fileID: 11400000, guid: 55b72344193cd8a43a12adb1e05d37d7, type: 2}
     chord: 0.2
     boneLength: 2
-    initialDihedralLocal: 10
-    initialSweepLocal: 30
-    initialTwistLocal: -4
+    fastConfiguration:
+      dihedralLocal: 0
+      sweepLocal: 0
+      twistLocal: 0
+    neutralConfiguration:
+      dihedralLocal: 0
+      sweepLocal: 0
+      twistLocal: 0
+    maneuverConfiguration:
+      dihedralLocal: 0
+      sweepLocal: 0
+      twistLocal: 0
     numPanelsInward: 16

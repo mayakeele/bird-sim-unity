@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74df371ede910c8498549504f7833078, type: 3}
   m_Name: TailPitch
   m_EditorClassIdentifier: 
-  forward: 15
-  neutral: -10
-  reverse: -35
-  neutralAngle: 0
+  forward: 21
+  neutral: -4
+  reverse: -29
+  neutralAngle: -5
   forwardAngleRelative: 25
   reverseAngleRelative: -25

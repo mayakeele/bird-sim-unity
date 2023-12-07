@@ -46,10 +46,37 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Yaw"",
+                    ""type"": ""Value"",
+                    ""id"": ""569c33e0-709d-4aca-81dd-d77a66f2e972"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Flap"",
                     ""type"": ""Value"",
                     ""id"": ""709a40c2-bf8e-4e54-a62e-4b14356cb6f4"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""FlightConfiguration"",
+                    ""type"": ""Value"",
+                    ""id"": ""092b8b70-dc68-4519-9331-287962ee95d4"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraHorizontal"",
+                    ""type"": ""Value"",
+                    ""id"": ""c8c67694-b1fe-4a98-8f0b-8d14ecc2b524"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -90,7 +117,7 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""WS"",
                     ""id"": ""70ff485d-99bc-4648-868f-880a04a47d85"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -168,17 +195,6 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""79834513-31ba-4223-824d-ac1f87f1d9e3"",
-                    ""path"": ""<HID::Logitech Logitech Extreme 3D>/trigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Flap"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""5fc5b54c-ec5b-47a6-8441-dd7542c86c2e"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -191,7 +207,7 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8fbc9937-5144-4ed2-b20a-4f84d2ab80da"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -200,18 +216,7 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""7efb252b-1c8a-4904-8628-ac06d1116106"",
-                    ""path"": ""<XInputController>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Flap"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""AD"",
                     ""id"": ""d88d99f2-ff23-45cc-aae8-8ed50e1bc98c"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -242,6 +247,160 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Roll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""QE"",
+                    ""id"": ""bc9e2cd0-9389-4993-812f-122d67799dfe"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Negative"",
+                    ""id"": ""40513b20-8f1e-477d-a362-e3bf27a771a0"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Positive"",
+                    ""id"": ""a25b51bb-09ff-41b4-8c76-949be6152843"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Bumpers"",
+                    ""id"": ""ab2a0774-c720-4e6b-bd87-ee0caab8d9b0"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Negative"",
+                    ""id"": ""b90e816e-1e7f-4621-b609-1b92444625f0"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Positive"",
+                    ""id"": ""d3a096de-bf19-43ac-b270-cf6d16661c4c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""def9cb90-6b60-427d-9af2-064aae379efe"",
+                    ""path"": ""<Gamepad>/rightStick/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlightConfiguration"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrow Keys"",
+                    ""id"": ""6c716ade-8e62-48f6-8ef5-74e56e9ba7aa"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlightConfiguration"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""43ecc3d4-3928-4a3e-a144-8b485a69459b"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlightConfiguration"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""236d7690-97af-4e51-9f5b-c2ecaca6b4bb"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FlightConfiguration"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08e96f11-1220-424a-8ef9-eb7c559eac8d"",
+                    ""path"": ""<Gamepad>/rightStick/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrow Keys"",
+                    ""id"": ""3dbde308-5292-42b4-83fb-e688664da738"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraHorizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""dee706a8-1139-440f-9484-ca6a5f7ed004"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""90266392-3bd1-495b-9131-9eef6ca97f7c"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -252,7 +411,10 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
         m_gameplay = asset.FindActionMap("gameplay", throwIfNotFound: true);
         m_gameplay_Pitch = m_gameplay.FindAction("Pitch", throwIfNotFound: true);
         m_gameplay_Roll = m_gameplay.FindAction("Roll", throwIfNotFound: true);
+        m_gameplay_Yaw = m_gameplay.FindAction("Yaw", throwIfNotFound: true);
         m_gameplay_Flap = m_gameplay.FindAction("Flap", throwIfNotFound: true);
+        m_gameplay_FlightConfiguration = m_gameplay.FindAction("FlightConfiguration", throwIfNotFound: true);
+        m_gameplay_CameraHorizontal = m_gameplay.FindAction("CameraHorizontal", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -316,14 +478,20 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_gameplay_Pitch;
     private readonly InputAction m_gameplay_Roll;
+    private readonly InputAction m_gameplay_Yaw;
     private readonly InputAction m_gameplay_Flap;
+    private readonly InputAction m_gameplay_FlightConfiguration;
+    private readonly InputAction m_gameplay_CameraHorizontal;
     public struct GameplayActions
     {
         private @BirdInputActions m_Wrapper;
         public GameplayActions(@BirdInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pitch => m_Wrapper.m_gameplay_Pitch;
         public InputAction @Roll => m_Wrapper.m_gameplay_Roll;
+        public InputAction @Yaw => m_Wrapper.m_gameplay_Yaw;
         public InputAction @Flap => m_Wrapper.m_gameplay_Flap;
+        public InputAction @FlightConfiguration => m_Wrapper.m_gameplay_FlightConfiguration;
+        public InputAction @CameraHorizontal => m_Wrapper.m_gameplay_CameraHorizontal;
         public InputActionMap Get() { return m_Wrapper.m_gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -339,9 +507,18 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
             @Roll.started += instance.OnRoll;
             @Roll.performed += instance.OnRoll;
             @Roll.canceled += instance.OnRoll;
+            @Yaw.started += instance.OnYaw;
+            @Yaw.performed += instance.OnYaw;
+            @Yaw.canceled += instance.OnYaw;
             @Flap.started += instance.OnFlap;
             @Flap.performed += instance.OnFlap;
             @Flap.canceled += instance.OnFlap;
+            @FlightConfiguration.started += instance.OnFlightConfiguration;
+            @FlightConfiguration.performed += instance.OnFlightConfiguration;
+            @FlightConfiguration.canceled += instance.OnFlightConfiguration;
+            @CameraHorizontal.started += instance.OnCameraHorizontal;
+            @CameraHorizontal.performed += instance.OnCameraHorizontal;
+            @CameraHorizontal.canceled += instance.OnCameraHorizontal;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -352,9 +529,18 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
             @Roll.started -= instance.OnRoll;
             @Roll.performed -= instance.OnRoll;
             @Roll.canceled -= instance.OnRoll;
+            @Yaw.started -= instance.OnYaw;
+            @Yaw.performed -= instance.OnYaw;
+            @Yaw.canceled -= instance.OnYaw;
             @Flap.started -= instance.OnFlap;
             @Flap.performed -= instance.OnFlap;
             @Flap.canceled -= instance.OnFlap;
+            @FlightConfiguration.started -= instance.OnFlightConfiguration;
+            @FlightConfiguration.performed -= instance.OnFlightConfiguration;
+            @FlightConfiguration.canceled -= instance.OnFlightConfiguration;
+            @CameraHorizontal.started -= instance.OnCameraHorizontal;
+            @CameraHorizontal.performed -= instance.OnCameraHorizontal;
+            @CameraHorizontal.canceled -= instance.OnCameraHorizontal;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -376,6 +562,9 @@ public partial class @BirdInputActions: IInputActionCollection2, IDisposable
     {
         void OnPitch(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
+        void OnYaw(InputAction.CallbackContext context);
         void OnFlap(InputAction.CallbackContext context);
+        void OnFlightConfiguration(InputAction.CallbackContext context);
+        void OnCameraHorizontal(InputAction.CallbackContext context);
     }
 }

@@ -23,7 +23,10 @@ public class WingPanelCreator : MonoBehaviour
         float twistTotal = 0;
         float sweepTotal = 0;
         float dihedralTotal = 0;
-           
+
+        // Store mirrored area of the wing (assume trapezoidal sections)
+        float totalArea = 0;
+
 
         // Calculate and store relative position and orientation of each section relative to the root
         for (int s = 0; s < numSections; s++) {
@@ -34,15 +37,18 @@ public class WingPanelCreator : MonoBehaviour
             dihedralTotal += currSection.dihedralLocal;
 
             float boneLength = wingSections[s].boneLength;
-            float horizontalLength = boneLength * Mathf.Cos(dihedralTotal * Mathf.Deg2Rad);
+            float spanwiseLength = boneLength * Mathf.Cos(sweepTotal * Mathf.Deg2Rad);
+
+            // Calculate mirrored area of the trapezoid between this section and next section
+            if (s != numSections-1) totalArea += spanwiseLength * (currSection.chord + wingSections[s+1].chord);
 
             //float x = xPrev + horizontalLength * Mathf.Sin(sweepTotal * Mathf.Deg2Rad);
             //float y = yPrev + currSection.boneLength * Mathf.Sin(dihedralTotal * Mathf.Deg2Rad);
             //float z = zPrev + horizontalLength * Mathf.Cos(sweepTotal * Mathf.Deg2Rad) * sign;
 
-            float z = zPrev + horizontalLength * Mathf.Sin(-sweepTotal * Mathf.Deg2Rad);
+            float z = zPrev + boneLength * Mathf.Sin(-sweepTotal * Mathf.Deg2Rad);
             float y = yPrev + boneLength * Mathf.Sin(dihedralTotal * Mathf.Deg2Rad);
-            float x = xPrev + horizontalLength * Mathf.Cos(sweepTotal * Mathf.Deg2Rad) * -sign;
+            float x = xPrev + spanwiseLength * Mathf.Cos(dihedralTotal * Mathf.Deg2Rad) * -sign;
 
             wingSections[s].SetPositionAndTwist(new Vector3(x,y,z), twistTotal);
 
@@ -50,6 +56,13 @@ public class WingPanelCreator : MonoBehaviour
             yPrev = y;
             zPrev = z;
         }
+
+
+        // Calculate local aspect ratio of this wing
+        // for now, constant across this half
+        float totalSpan = xPrev * 2;
+        float localAR = totalSpan * totalSpan / totalArea;
+        
 
 
         // Interpolate between sections to create panels
@@ -77,6 +90,7 @@ public class WingPanelCreator : MonoBehaviour
                 float panelChord = Mathf.Lerp(inSection.chord, outSection.chord, chordGradient);
                 float panelTwist = Mathf.Lerp(inSection.twistAbsolute, outSection.twistAbsolute, chordGradient);
                 float panelArea = panelChord * panelWidth;
+                
 
                 Vector3 initialForward = new Vector3(0, 0, 1);
                 Vector3 initialUp = Vector3.Cross(initialForward, quarterChordAxis).normalized * -sign;
@@ -87,7 +101,7 @@ public class WingPanelCreator : MonoBehaviour
                 Vector3 newForward = twistRotation * initialForward;
                 Vector3 newUp = twistRotation * initialUp;
 
-                WingPanel wingPanel = new WingPanel(inSection.airfoil, panelChord, panelArea, panelPosition, newForward, newUp);
+                WingPanel wingPanel = new WingPanel(inSection.airfoil, panelChord, panelArea, localAR, panelPosition, newForward, newUp);
                 wingPanels.Add(wingPanel);
 
                 CreateWingQuad(wingPanel, rootTransform);

@@ -17,12 +17,15 @@ public class TailPanel
     public Vector3 up;
     public Vector3 left;
 
+    public float currPitch;
+    public float currRoll;
+
 
     public TailPanel(TailData tailData, Transform rootTransform) {
         this.tailData = tailData;
         this.rootTransform = rootTransform;
         SetSpread(0);
-        SetAngles(0,0,0);
+        SetAngles(0,0);
     }
 
 
@@ -34,13 +37,13 @@ public class TailPanel
         UpdateCenterPosition();
     }
 
-    public void SetAngles(float pitch, float yaw, float roll) {
-        Quaternion pitchYawRotation = Quaternion.AngleAxis(pitch, Vector3.left) * Quaternion.AngleAxis(yaw, Vector3.up);
-        forward = pitchYawRotation * Vector3.forward;
+    public void SetAngles(float pitch, float roll) {
+        Quaternion pitchRotation = Quaternion.AngleAxis(pitch, Vector3.left);
+        forward = pitchRotation * Vector3.forward;
         //forward = rootTransform.forward;
 
         Quaternion rollRotation = Quaternion.AngleAxis(roll, forward);
-        up = rollRotation * pitchYawRotation * Vector3.up;
+        up = rollRotation * pitchRotation * Vector3.up;
         //up = rootTransform.up;
 
         left = Vector3.Cross(forward, up).normalized;
@@ -48,9 +51,22 @@ public class TailPanel
         UpdateCenterPosition();
     }
 
+    //public void SetAngles(float pitch, float roll) {
+
+    //    Quaternion rollRotation = Quaternion.AngleAxis(roll, Vector3.forward);
+    //    left = rollRotation * Vector3.left;
+
+    //    Quaternion pitchRotation = Quaternion.AngleAxis(pitch, left);
+    //    forward = pitchRotation * Vector3.forward;
+        
+    //    up = -Vector3.Cross(forward, left).normalized;
+
+    //    UpdateCenterPosition();
+    //}
+
     private void UpdateCenterPosition() {
         float distanceAC = 0.667f * tailData.mainChord * Mathf.Cos(0.5f * spreadAngle * Mathf.Deg2Rad);
-        ACPosition = -forward * distanceAC;
+        ACPosition = -forward.normalized * distanceAC;
     }
 
 

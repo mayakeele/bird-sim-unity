@@ -13,11 +13,15 @@ public class BirdController : MonoBehaviour
 
     // Control Ranges
     public ControlRange tailPitchRange;
-    public ControlRange tailYawRange;
     public ControlRange tailRollRange;
     public ControlRange wingtipTwistRange;
     public int wingtipSectionIndex;
     [Space]
+
+    // Control Change Rates (degrees/second)
+    public float tailPitchRate;
+    public float tailRollRate;
+    public float wingtipTwistRate;
 
     // Wing & Tail Data
     public WingData wingData;
@@ -36,6 +40,7 @@ public class BirdController : MonoBehaviour
     public WingPanelCreator wingPanelCreator;
     public BirdAnimator animator;
     public CameraFollow cameraFollow;
+    public TestGUI GUI;
     [Space]
 
 
@@ -53,17 +58,6 @@ public class BirdController : MonoBehaviour
 
     // Input Settings
     public float initialSpeed;
-
-    float pitchDeadzone = 0.01f;
-    float pitchSmoothingPower = 1;
-
-    float rollDeadzone = 0.01f;
-    float rollSmoothingPower = 1;
-
-    float yawDeadzone = 0.01f;
-    float yawSmoothingPower = 1;
-
-    float lookDeadzoneSqr = 0.01f * 0.01f;
 
 
 
@@ -114,8 +108,13 @@ public class BirdController : MonoBehaviour
     float rollInput = 0;
     float yawInput = 0;
     float flapInput = 0;
-    bool brakeInput = false;
-    Vector2 lookInput = Vector2.zero;
+    float flightConfigurationInput = 0;
+    float cameraHorizontalInput = 0;
+
+    float wingtipTwistL;
+    float wingtipTwistR;
+    float tailPitch;
+    float tailRoll;
 
 
     // temp area
@@ -135,8 +134,8 @@ public class BirdController : MonoBehaviour
         maxForce = maxGLoading * g * rb.mass;
 
         // Create wing sections from geometry data
-        wingSectionsL = wingData.CreateWingSections();
-        wingSectionsR = wingData.CreateWingSections();
+        wingSectionsL = wingData.CreateWingSections(0);
+        wingSectionsR = wingData.CreateWingSections(0);
 
         // Create tail panel
         tailPanel = new TailPanel(tailData, tailRoot);
@@ -154,23 +153,25 @@ public class BirdController : MonoBehaviour
 
     void FixedUpdate() {
 
-        // Update the state of the bird
         UpdateVelocities();
 
+        ReadInputs();
 
-        // Get user input and apply to geometry
-        pitchInput = input.Pitch.ReadValue<float>();
-        rollInput = input.Roll.ReadValue<float>();
-        flapInput = input.Flap.ReadValue<float>();
+        wingSectionsL = wingData.CreateWingSections(flightConfigurationInput);
+        wingSectionsR = wingData.CreateWingSections(flightConfigurationInput);
 
-        float wingtipTwistL = wingtipTwistRange.GetAngle(rollInput);
-        float wingtipTwistR = wingtipTwistRange.GetAngle(-rollInput);
-        float tailPitch = tailPitchRange.GetAngle(pitchInput);
+        // Move target angles towards target
+        wingtipTwistL = wingtipTwistL.MoveTowards(wingtipTwistRange.GetAngle(rollInput), wingtipTwistRate * Time.fixedDeltaTime);
+        wingtipTwistR = wingtipTwistR.MoveTowards(wingtipTwistRange.GetAngle(-rollInput), wingtipTwistRate * Time.fixedDeltaTime);
+        tailPitch = tailPitch.MoveTowards(tailPitchRange.GetAngle(pitchInput), tailPitchRate * Time.fixedDeltaTime);
+        tailRoll = tailRoll.MoveTowards(tailRollRange.GetAngle(-yawInput), tailRollRate * Time.fixedDeltaTime);
 
+        // Update surface angles
         wingSectionsL[wingtipSectionIndex].twistLocal = wingtipTwistL;
         wingSectionsR[wingtipSectionIndex].twistLocal = wingtipTwistR;
+        tailPanel.SetAngles(tailPitch, tailRoll);
 
-        tailPanel.SetAngles(tailPitch, 0, 0);
+
 
         RecalculateWingPanels();
 
@@ -199,14 +200,19 @@ public class BirdController : MonoBehaviour
         rb.AddRelativeForce(netForce);
         rb.AddRelativeTorque(netMoment);
 
-        //Debug.Log(netForce);
+        // Calculate stability properties
+        Vector3 netLift = wingLiftForce + tailLiftForce;
+        Vector3 netDrag = wingDragForce + tailDragForce;
+        float liftDragRatio = netLift.magnitude / netDrag.magnitude;
         
+
         UpdateCG();
 
 
-        //Debug.Log("Lift (N): " + wingLiftForce.magnitude);
-        //Debug.Log("Drag (N): " + netDragForce.magnitude);
-        //Debug.Log("Moment (Nm): " + netMoment.magnitude);
+        // Send data to GUI
+        GUI.SetAirspeed(rb.velocity.magnitude);
+        GUI.SetLD(liftDragRatio);
+        
     }
 
 
@@ -334,6 +340,17 @@ public class BirdController : MonoBehaviour
 
 
 
+
+    void ReadInputs() {
+        pitchInput = input.Pitch.ReadValue<float>();
+        rollInput = input.Roll.ReadValue<float>();
+        yawInput = input.Yaw.ReadValue<float>();
+        flapInput = input.Flap.ReadValue<float>();
+        flightConfigurationInput = input.FlightConfiguration.ReadValue<float>();
+        cameraHorizontalInput = input.CameraHorizontal.ReadValue<float>();
+    }
+
+
     private void OnEnable() {
         input.Enable();
     }
@@ -341,35 +358,7 @@ public class BirdController : MonoBehaviour
         input.Disable();
     }
 
-    /*// Input Events
-    public void OnPitchInput(InputAction.CallbackContext context) {
-        float i = -1 * context.action.ReadValue<float>();
-        i = Mathf.Abs(i) > pitchDeadzone ? i : 0;
-
-        pitchInput = Mathf.Abs(Mathf.Pow(i, pitchSmoothingPower)) * Mathf.Sign(i);
-    }
-    public void OnRollInput(InputAction.CallbackContext context) {
-        float i = context.action.ReadValue<float>();
-        i = Mathf.Abs(i) > rollDeadzone ? i : 0;
-
-        rollInput = Mathf.Abs(Mathf.Pow(i, rollSmoothingPower)) * Mathf.Sign(i);
-    }
-    public void OnYawInput(InputAction.CallbackContext context) {
-        float i = context.action.ReadValue<float>();
-        i = Mathf.Abs(i) > yawDeadzone ? i : 0;
-
-        yawInput = Mathf.Abs(Mathf.Pow(i, yawSmoothingPower)) * Mathf.Sign(i);
-    }
-    public void OnFlapInput(InputAction.CallbackContext context) {
-        flapInput = context.action.IsPressed();
-    }
-    public void OnBrakeInput(InputAction.CallbackContext context) {
-        flapInput = context.action.IsPressed();
-    }
-    public void OnLookInput(InputAction.CallbackContext context) {
-        Vector2 i = context.action.ReadValue<Vector2>();
-        lookInput = i.sqrMagnitude > lookDeadzoneSqr ? i : Vector2.zero;
-    }*/
-
+    
+    
 
 }

@@ -117,57 +117,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  dragCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -90
-      value: 2
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: -16
-      value: 0.11817087
-      inSlope: -0.05086025
-      outSlope: -0.033104226
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0
-      value: 0.008
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 16
-      value: 0.11817087
-      inSlope: 0.033104226
-      outSlope: 0.05086025
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 90
-      value: 2
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   generateCurves: 0
   liftCurveSlopeLinear: 0.104
   alphaZeroLift: 0
@@ -176,8 +125,7 @@ MonoBehaviour:
   CLStall: 1.5
   alphaPostStallPeak: 45
   CLPostStallPeak: 0.6
-  parasiticDrag: 0.008
-  wingAspectRatio: 8
+  CDParasitic: 0.01
   spanwiseEfficiencyFactor: 1
   CDMax: 2
   pitchingMoment: -0.012

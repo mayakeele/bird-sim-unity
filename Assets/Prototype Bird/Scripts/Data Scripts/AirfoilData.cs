@@ -7,7 +7,6 @@ using UnityEditor;
 public class AirfoilData : ScriptableObject
 {
     public AnimationCurve liftCurve;
-    public AnimationCurve dragCurve;
     public bool generateCurves;
 
     [Header("Lift Properties")]
@@ -23,11 +22,8 @@ public class AirfoilData : ScriptableObject
 
     [Space]
     [Header("Drag Properties")]
-    public float parasiticDrag = 0.01f;
-    [Space]
-    public float wingAspectRatio = 6f;
+    public float CDParasitic = 0.01f;
     public float spanwiseEfficiencyFactor = 1;
-    [Space]
     public float CDMax = 2.0f;
 
     [Space]
@@ -100,50 +96,13 @@ public class AirfoilData : ScriptableObject
     }
 
 
-    public AnimationCurve GenerateDragCurve() {
-
-        AnimationCurve curve = new AnimationCurve();
-
-        // POSITIVE ALPHA SIDE
-
-        // Zero lift alpha, only parasitic drag
-        Keyframe key0 = new Keyframe(alphaZeroLift, parasiticDrag, 0, 0);
-        curve.AddKey(key0);
-
-        // Quadratically (concave up) increase drag while lift is linear
-        float maxLiftLinear = liftCurveSlopeLinear * (alphaStall - alphaZeroLift);
-        float scaleFactor = 1 / (Mathf.PI * wingAspectRatio * spanwiseEfficiencyFactor);
-        float dragPreStall = (maxLiftLinear * maxLiftLinear) * scaleFactor + parasiticDrag;
-
-        float leftSlope = 8 * scaleFactor * liftCurveSlopeLinear;
-        float rightSlope = 2 * (CDMax - dragPreStall) / (90 - alphaStall);
-
-
-        Keyframe key1a = new Keyframe(alphaZeroLift + alphaStall, dragPreStall, leftSlope, rightSlope);
-        curve.AddKey(key1a);
-
-        Keyframe key1b = new Keyframe(alphaZeroLift - alphaStall, dragPreStall, -rightSlope, -leftSlope);
-        curve.AddKey(key1b);
-
-
-        // Quadratically (concave down) increase drag in post-stall region
-        Keyframe key2a = new Keyframe(90, CDMax, 0, 0);
-        curve.AddKey(key2a);
-
-        Keyframe key2b = new Keyframe(-90, CDMax, 0, 0);
-        curve.AddKey(key2b);
-
-
-        return curve;
-    }
-
+  
 
     private void OnValidate() {
         if (generateCurves) {
             Debug.Log("Generated lift and drag curves for airfoil");
 
             liftCurve = GenerateLiftCurve();
-            dragCurve = GenerateDragCurve();
             generateCurves = false;
         }
 
@@ -154,8 +113,23 @@ public class AirfoilData : ScriptableObject
         return liftCurve.Evaluate(alphaDeg);
     }
 
-    public float GetDragCoefficient(float alphaDeg) {
-        return dragCurve.Evaluate(alphaDeg);
+    public float GetDragCoefficient(float alphaDeg, float CL, float AR) {
+        alphaDeg = Mathf.Abs(alphaDeg);
+        CL = Mathf.Abs(CL);
+
+        float CDInduced = CL * CL / (Mathf.PI * AR * spanwiseEfficiencyFactor);
+
+        if (alphaDeg <= alphaStall) {
+            return CDInduced + CDParasitic;
+        }
+        else if (alphaDeg <= 90) {
+            float CDStall = CLStall * CLStall / (Mathf.PI * AR * spanwiseEfficiencyFactor);
+            float CDInterpolated = alphaDeg.MapClamped(alphaStall, 90, CDStall, CDMax);
+            return CDInterpolated + CDParasitic;
+        }
+        else {
+            return CDMax + CDParasitic;
+        }
     }
 
 }

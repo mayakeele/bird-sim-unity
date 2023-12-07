@@ -6,24 +6,38 @@ using TMPro;
 public class TestGUI : MonoBehaviour
 {
     public TMP_Text airspeedText;
-    //public Text airspeedText;
+    public TMP_Text LDText;
 
     public BirdController birdController;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    float airspeed;
+    float LD;
 
-    // Update is called once per frame
+    public int updateFrame = 10;
+    int counter = 0;
+
+
     void Update()
     {
-        RefreshAirspeed(birdController.rb.velocity.magnitude);
+        counter++;
+
+        if (counter >= updateFrame) {
+            RefreshGUI();
+            counter = 0;
+        }
     }
 
 
-    private void RefreshAirspeed(float airspeed) {
+    private void RefreshGUI() {
         airspeedText.text = "Airspeed: " + airspeed.ToString("F1") + " m/s";
+        LDText.text = "L/D: " + LD.ToString("F1");
+    }
+
+
+    public void SetAirspeed(float airspeed) {
+        this.airspeed = airspeed;
+    }
+    public void SetLD(float LD) {
+        this.LD = LD;
     }
 }

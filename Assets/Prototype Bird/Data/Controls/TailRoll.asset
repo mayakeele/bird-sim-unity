@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78755c3e9162d5d4ebfd225eb0a3b988, type: 3}
   m_Name: TailRoll
   m_EditorClassIdentifier: 
-  forward: 0
+  forward: 45
   neutral: 0
-  reverse: 0
-  maxDeflection: 60
+  reverse: -45
+  maxDeflection: 20

@@ -14,28 +14,46 @@ public class WingData : ScriptableObject
         public float chord; // Chord of the airfoil at the root of this section
         public float boneLength; // Length of the line connecting this quarter-chord to the next section
 
-        public float initialDihedralLocal;
-        public float initialSweepLocal;
-        public float initialTwistLocal;
+        public SectionAngles fastConfiguration;
+        public SectionAngles neutralConfiguration;
+        public SectionAngles maneuverConfiguration;
 
         public int numPanelsInward; // Number of panels between the previous section and this section. Does not apply to first section
     }
+
+    [System.Serializable]
+    public struct SectionAngles {
+        public float dihedralLocal;
+        public float sweepLocal;
+        public float twistLocal;
+    }
+
+
+
 
     public SectionData[] wingSectionData;
 
 
 
 
-    public List<WingSection> CreateWingSections() {
+    public List<WingSection> CreateWingSections(float configurationInput) {
 
         int numSections = wingSectionData.Length;
         List<WingSection> wingSections = new List<WingSection>();
 
         for(int i=0; i<numSections; i++) {
             SectionData section = wingSectionData[i];
+
+            // Set angles based on given configuration
+            SectionAngles lowAngles = section.neutralConfiguration;
+            SectionAngles highAngles = configurationInput >= 0 ? section.fastConfiguration : section.maneuverConfiguration;
+            float currDihedral = Mathf.Lerp(lowAngles.dihedralLocal, highAngles.dihedralLocal, Mathf.Abs(configurationInput));
+            float currSweep = Mathf.Lerp(lowAngles.sweepLocal, highAngles.sweepLocal, Mathf.Abs(configurationInput));
+            float currTwist = Mathf.Lerp(lowAngles.twistLocal, highAngles.twistLocal, Mathf.Abs(configurationInput));         
+
             wingSections.Add(
                 new WingSection(section.airfoil, section.chord, section.boneLength, 
-                section.initialDihedralLocal, section.initialSweepLocal, section.initialTwistLocal, 
+                currDihedral, currSweep, currTwist, 
                 section.numPanelsInward));
         }
 

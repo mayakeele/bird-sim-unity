@@ -6,7 +6,6 @@ using UnityEngine;
 public class TailData : ScriptableObject
 {
     public AnimationCurve liftCurve;
-    public AnimationCurve dragCurve;
     public bool generateCurves;
 
     [Header("Geometric Properties")]
@@ -25,7 +24,7 @@ public class TailData : ScriptableObject
 
     [Space]
     [Header("Drag Properties")]
-    public float CDParasitic = 0.01f;
+    public float CDParasitic = 0.005f;
     public float CDMax = 2.0f;
 
     [Space]
@@ -84,7 +83,6 @@ public class TailData : ScriptableObject
             Debug.Log("Generated lift and drag curves for airfoil");
 
             liftCurve = GenerateLiftCurve();
-            //dragCurve = GenerateDragCurve();
             generateCurves = false;
         }
 
