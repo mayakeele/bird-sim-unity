@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Eagle Wing Data
   m_EditorClassIdentifier: 
   wingSectionData:
-  - chord: 0.2
+  - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
+    chord: 0.2
     boneLength: 0.4
-    airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
-  - chord: 0.2
+  - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
+    chord: 0.2
     boneLength: 0.3
-    airfoil: {fileID: 11400000, guid: 8e72bc0e8f18daa46a1d6eadbdf088ac, type: 2}
-  - chord: 0.05
+  - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
+    chord: 0.05
     boneLength: 0
-    airfoil: {fileID: 11400000, guid: 8e72bc0e8f18daa46a1d6eadbdf088ac, type: 2}

@@ -16,7 +16,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: -3
       value: 0
       inSlope: 0.11
       outSlope: 0.11
@@ -25,8 +25,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 14
-      value: 1.54
+      time: 13
+      value: 1.76
       inSlope: 0.11
       outSlope: 0.11
       tangentMode: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 18
+      time: 16
       value: 1.7
       inSlope: 0
       outSlope: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 31.5
+      time: 30.5
       value: 0.99
       inSlope: 0
       outSlope: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: -3
       value: 0.02
       inSlope: 0
       outSlope: 0
@@ -85,10 +85,10 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 18
-      value: 0.032479018
-      inSlope: 0.0014005634
-      outSlope: 0.05465336
+      time: 16
+      value: 0.29808187
+      inSlope: 0.02801127
+      outSlope: 0.045997787
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -107,13 +107,14 @@ MonoBehaviour:
     m_RotationOrder: 4
   generateCurves: 0
   liftCurveSlopeLinear: 0.11
-  alphaZeroLift: 0
-  alphaNonlinear: 14
-  alphaStall: 18
+  alphaZeroLift: -3
+  alphaNonlinear: 13
+  alphaStall: 16
   CLStall: 1.7
   alphaPostStallPeak: 45
   CLPostStallPeak: 1.1
   parasiticDrag: 0.02
-  wingAspectRatio: 100
+  wingAspectRatio: 5
   spanwiseEfficiencyFactor: 1
   CDMax: 2
+  pitchingMoment: 0.01

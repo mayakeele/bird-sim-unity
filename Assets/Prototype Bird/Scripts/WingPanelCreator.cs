@@ -106,7 +106,7 @@ public class WingPanelCreator : MonoBehaviour
         Quaternion panelRotation = Quaternion.LookRotation(panel.forward, panel.up);
 
         GameObject quad = Instantiate(quadPrefab, rootTransform);
-        quad.transform.SetLocalPositionAndRotation(panel.position, panelRotation);
+        quad.transform.SetLocalPositionAndRotation(panel.positionRoot, panelRotation);
         quad.transform.localScale = new Vector3(width, 1, chord);
     }
 

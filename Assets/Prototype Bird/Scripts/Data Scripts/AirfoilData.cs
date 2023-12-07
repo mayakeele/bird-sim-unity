@@ -30,6 +30,11 @@ public class AirfoilData : ScriptableObject
     [Space]
     public float CDMax = 2.0f;
 
+    [Space]
+    [Header("Pitching Moment Properties")]
+    public float pitchingMoment = -0.01f;
+
+
 
 
     public AnimationCurve GenerateLiftCurve() {
