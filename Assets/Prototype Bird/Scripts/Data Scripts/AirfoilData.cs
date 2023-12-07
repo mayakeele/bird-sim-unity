@@ -11,7 +11,7 @@ public class AirfoilData : ScriptableObject
     public bool generateCurves;
 
     [Header("Lift Properties")]
-    public float liftCurveSlopeLinear = 0.11f;
+    public float liftCurveSlopeLinear = 0.1097f;
     public float alphaZeroLift = 0f;
     public float alphaNonlinear = 14f;
     [Space]
@@ -87,12 +87,12 @@ public class AirfoilData : ScriptableObject
 
 
         // 90 degrees zero lift
-        float slope90degrees = (-CLPostStallPeak) / (90f - alphaPostStallPeak);
+        //float slope90degrees = (-CLPostStallPeak) / (90f - alphaPostStallPeak);
 
-        Keyframe key5a = new Keyframe(90, 0, slope90degrees, 0);
+        Keyframe key5a = new Keyframe(90, 0, 0, 0);
         curve.AddKey(key5a);
 
-        Keyframe key5b = new Keyframe(-90, 0, slope90degrees, 0);
+        Keyframe key5b = new Keyframe(-90, 0, 0, 0);
         curve.AddKey(key5b);
 
 
