@@ -27,16 +27,12 @@ public class WingPanel
 
 
 
-    public Vector3[] CalculateLiftDragPitch(Vector3 cgToRoot, Vector3 cgVelocity, Vector3 bodyRotationRate, float density) {
+    public Vector3[] CalculateLiftDragPitch(Vector3 panelVelocityLocal, float density) {
         // Returns a float array with three values: [0] is the lift force, [1] is the drag force and [2] is the pitching moment
 
-        Vector3 positionCG = positionRoot + cgToRoot;
 
-        Vector3 rotationVelocity = Vector3.Cross(bodyRotationRate, positionCG);
-        Vector3 totalVelocity = cgVelocity + rotationVelocity;
-
-        float alpha = Aerodynamics.Alpha(totalVelocity, forward, up, out Vector3 planeVelocity);
-        Debug.Log("Alpha: " + alpha);
+        float alpha = Aerodynamics.Alpha(panelVelocityLocal, forward, up, out Vector3 planeVelocity);
+        //Debug.Log("Alpha: " + alpha);
 
         float CL = airfoil.GetLiftCoefficient(alpha);
         float CD = airfoil.GetDragCoefficient(alpha);
@@ -48,8 +44,8 @@ public class WingPanel
         float dragForce = Aerodynamics.DragForce(CD, vSquared, area, density);
         float pitchingMoment = Aerodynamics.PitchingMoment(CM, vSquared, area, chord, density);
 
-        Vector3 liftDirection = Vector3.Cross(left, planeVelocity).normalized;
-        Vector3 dragDirection = -planeVelocity.normalized;
+        Vector3 liftDirection = Vector3.Cross(left, panelVelocityLocal).normalized;
+        Vector3 dragDirection = -panelVelocityLocal.normalized;
 
         return new Vector3[] { liftForce * liftDirection, dragForce * dragDirection, pitchingMoment * left};
     }

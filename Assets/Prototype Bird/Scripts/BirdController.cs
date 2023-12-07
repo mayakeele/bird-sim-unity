@@ -63,7 +63,10 @@ public class BirdController : MonoBehaviour
     List<WingPanel> wingPanels;
 
     Vector3 velocityWorld;
-    Vector3 velocityBody;
+    Vector3 velocityLocal;
+
+    Vector3 angularVelocityWorld;
+    Vector3 angularVelocityLocal;
 
     float yaw;
     float pitch;
@@ -72,7 +75,7 @@ public class BirdController : MonoBehaviour
     //float yawRate;
     //float pitchRate;
     //float rollRate;
-    Vector3 localAngularVelocityRad;
+    
 
     float bodyAlpha;
     float bodyBeta;
@@ -112,7 +115,7 @@ public class BirdController : MonoBehaviour
 
         UpdateCG();
 
-        //rb.velocity = cg.forward * initialSpeed;
+        rb.velocity = cg.forward * initialSpeed;
     }
 
 
@@ -125,7 +128,7 @@ public class BirdController : MonoBehaviour
         RebuildWingPanels();
 
 
-        Vector3[] aeroForces = CalculateAerodynamics(wingPanels, velocityBody, localAngularVelocityRad);
+        Vector3[] aeroForces = CalculateAerodynamics(wingPanels, velocityLocal, angularVelocityLocal);
         Vector3 netLiftForce = aeroForces[0];
         Vector3 netDragForce = aeroForces[1];
         Vector3 netMoment = aeroForces[2];
@@ -136,9 +139,12 @@ public class BirdController : MonoBehaviour
         // Draw big vectors for lift and drag forces
         Debug.DrawRay(cg.position, cg.TransformVector(netLiftForce), Color.green);
         Debug.DrawRay(cg.position, cg.TransformVector(netDragForce), Color.red);
+        Debug.DrawRay(cg.position, cg.TransformVector(netMoment), Color.blue);
 
-        Debug.Log("Lift (N): " + netLiftForce.magnitude);
-        Debug.Log("Drag (N): " + netDragForce.magnitude);
+        //Debug.Log("Lift (N): " + netLiftForce.magnitude);
+        //Debug.Log("Drag (N): " + netDragForce.magnitude);
+        Debug.Log("Moment (Nm): " + netMoment.magnitude);
+
 
     }
 
@@ -153,13 +159,13 @@ public class BirdController : MonoBehaviour
         // Clear old panels and create new ones, populate list
         wingPanels = new List<WingPanel>();
         wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true));
-        //wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false));
+        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false));
     }
 
 
 
 
-    private Vector3[] CalculateAerodynamics(List<WingPanel> wingPanels, Vector3 cgVelocity, Vector3 rotationRate) {
+    private Vector3[] CalculateAerodynamics(List<WingPanel> wingPanels, Vector3 cgVelocityLocal, Vector3 rotationRateLocal) {
         // Runs aerodynamic calculations for all panels given.
         // Returns array of three vectors: [0] net lift force, [1] net drag force, [2] net moment
 
@@ -168,11 +174,18 @@ public class BirdController : MonoBehaviour
         Vector3 netMoment = Vector3.zero;
 
         for(int i = 0; i < wingPanels.Count; i++) {
+
             WingPanel panel = wingPanels[i];
 
+            // Get position of panel relative to cg
             Vector3 cgToRoot = wingRoot.localPosition - cg.localPosition;
+            Vector3 panelPosition = panel.positionRoot + cgToRoot;
 
-            Vector3[] aeroForces = panel.CalculateLiftDragPitch(cgToRoot, cgVelocity, rotationRate, rho);
+            // Calculate velocity at panel due to rotation
+            Vector3 rotationVelocity = Vector3.Cross(rotationRateLocal, panelPosition);
+
+
+            Vector3[] aeroForces = panel.CalculateLiftDragPitch(cgVelocityLocal + rotationVelocity, rho);
             Vector3 liftForce = aeroForces[0];
             Vector3 dragForce = aeroForces[1];
             Vector3 pitchMoment = aeroForces[2];
@@ -181,7 +194,7 @@ public class BirdController : MonoBehaviour
             netLiftForce += liftForce;
             netDragForce += dragForce;
             // calculate moment around cg as cross product of lift&drag w panel position
-            netMoment += -Vector3.Cross(liftForce + dragForce, panel.positionRoot + cgToRoot);
+            netMoment += Vector3.Cross(panel.positionRoot + cgToRoot, liftForce + dragForce);
             netMoment += pitchMoment;
         }
 
@@ -194,11 +207,13 @@ public class BirdController : MonoBehaviour
     void UpdateStateVariables() {
         // Updates system state variables
 
-        velocityWorld = testVelocity;//rb.velocity;
-        velocityBody = cg.InverseTransformDirection(velocityWorld);
+        //velocityWorld = testVelocity;//rb.velocity;
+        velocityWorld = rb.velocity;
+        velocityLocal = cg.InverseTransformDirection(velocityWorld);
 
-        //localAngularVelocityRad = transform.InverseTransformDirection(rb.angularVelocity);
-        localAngularVelocityRad = transform.InverseTransformDirection(testAngularVelocity);
+        angularVelocityWorld = rb.angularVelocity;
+        angularVelocityLocal = cg.InverseTransformDirection(angularVelocityWorld);
+        //localAngularVelocityRad = transform.InverseTransformDirection(testAngularVelocity);
 
 
         //yawRate = -localAngularVelocity.y;

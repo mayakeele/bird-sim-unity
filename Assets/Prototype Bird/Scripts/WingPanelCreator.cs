@@ -113,6 +113,7 @@ public class WingPanelCreator : MonoBehaviour
         foreach (GameObject quad in quadObjects){
             Destroy(quad);
         }
+        quadObjects.Clear();
     }
 
 }

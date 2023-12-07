@@ -43,39 +43,57 @@ public class AirfoilData : ScriptableObject
 
         // POSITIVE ALPHA SIDE
 
+
         // Zero lift alpha
         Keyframe key0 = new Keyframe(alphaZeroLift, 0, liftCurveSlopeLinear, liftCurveSlopeLinear);
         curve.AddKey(key0);
 
+
         // Yield (end of linear section)
         float yieldLift = liftCurveSlopeLinear * (alphaNonlinear - alphaZeroLift);
-        Keyframe key1 = new Keyframe(alphaNonlinear, yieldLift, liftCurveSlopeLinear, liftCurveSlopeLinear);
-        curve.AddKey(key1);
+
+        Keyframe key1a = new Keyframe(alphaNonlinear, yieldLift, liftCurveSlopeLinear, liftCurveSlopeLinear);
+        curve.AddKey(key1a);
+
+        Keyframe key1b = new Keyframe(alphaZeroLift-alphaNonlinear, -yieldLift, liftCurveSlopeLinear, liftCurveSlopeLinear);
+        curve.AddKey(key1b);
+
 
         // Stall (max lift)
-        Keyframe key2 = new Keyframe(alphaStall, CLStall, 0, 0);
-        curve.AddKey(key2);
+        Keyframe key2a = new Keyframe(alphaStall, CLStall, 0, 0);
+        curve.AddKey(key2a);
+
+        Keyframe key2b = new Keyframe(alphaZeroLift-alphaStall, -CLStall, 0, 0);
+        curve.AddKey(key2b);
+
 
         // Post-stall drop
         float dropAlpha = (alphaStall + alphaPostStallPeak) / 2;
         float dropCL = CLPostStallPeak * 0.9f;
-        Keyframe key3 = new Keyframe(dropAlpha, dropCL);
-        curve.AddKey(key3);
+
+        Keyframe key3a = new Keyframe(dropAlpha, dropCL);
+        curve.AddKey(key3a);
+
+        Keyframe key3b = new Keyframe(alphaZeroLift-dropAlpha, -dropCL);
+        curve.AddKey(key3b);
+
 
         // Post-stall peak
-        Keyframe key4 = new Keyframe(alphaPostStallPeak, CLPostStallPeak, 0, 0);
-        curve.AddKey(key4);
+        Keyframe key4a = new Keyframe(alphaPostStallPeak, CLPostStallPeak, 0, 0);
+        curve.AddKey(key4a);
+
+        Keyframe key4b = new Keyframe(alphaZeroLift-alphaPostStallPeak, -CLPostStallPeak, 0, 0);
+        curve.AddKey(key4b);
+
 
         // 90 degrees zero lift
         float slope90degrees = (-CLPostStallPeak) / (90f - alphaPostStallPeak);
-        Keyframe key5 = new Keyframe(90, 0, slope90degrees, 0);
-        curve.AddKey(key5);
 
+        Keyframe key5a = new Keyframe(90, 0, slope90degrees, 0);
+        curve.AddKey(key5a);
 
-        // NEGATIVE ALPHA SIDE
-
-        //Keyframe key6 = new Keyframe(alphaZeroLift, 0, liftCurveSlopeLinear, liftCurveSlopeLinear);
-        //curve.AddKey(key6);
+        Keyframe key5b = new Keyframe(-90, 0, slope90degrees, 0);
+        curve.AddKey(key5b);
 
 
         return curve;
@@ -100,12 +118,20 @@ public class AirfoilData : ScriptableObject
         float leftSlope = 4 * scaleFactor * liftCurveSlopeLinear;
         float rightSlope = 2 * (CDMax - dragPreStall) / (90 - alphaStall);
 
-        Keyframe key1 = new Keyframe(alphaStall, dragPreStall, leftSlope, rightSlope);
-        curve.AddKey(key1);
+
+        Keyframe key1a = new Keyframe(alphaStall, dragPreStall, leftSlope, rightSlope);
+        curve.AddKey(key1a);
+
+        Keyframe key1b = new Keyframe(alphaZeroLift-alphaStall, dragPreStall, -leftSlope, -rightSlope);
+        curve.AddKey(key1b);
+
 
         // Quadratically (concave down) increase drag in post-stall region
-        Keyframe key2 = new Keyframe(90, CDMax, 0, 0);
-        curve.AddKey(key2);
+        Keyframe key2a = new Keyframe(90, CDMax, 0, 0);
+        curve.AddKey(key2a);
+
+        Keyframe key2b = new Keyframe(-90, CDMax, 0, 0);
+        curve.AddKey(key2b);
 
 
         return curve;
