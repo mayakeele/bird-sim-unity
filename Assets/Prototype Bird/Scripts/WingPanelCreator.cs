@@ -4,8 +4,8 @@ using UnityEngine;
 public class WingPanelCreator : MonoBehaviour
 {
 
-    public int numPanelsPerSurface = 6;
     public GameObject quadPrefab;
+    public List<GameObject> quadObjects;
     
 
     public List<WingPanel> CreateWingPanels(List<WingSection> wingSections, Transform rootTransform, bool isLeft) {
@@ -18,24 +18,21 @@ public class WingPanelCreator : MonoBehaviour
         float yPrev = 0;
         float zPrev = 0;
 
-
         // Set initial angles for root section
-        WingSection rootSection = wingSections[0];
-
-        float twistTotal = rootSection.twistLocal;
-        float sweepTotal = rootSection.sweepLocal;
-        float dihedralTotal = rootSection.dihedralLocal;
+        float twistTotal = 0;
+        float sweepTotal = 0;
+        float dihedralTotal = 0;
            
 
-        // Calculate and store relative position and orientation of each section after the root
-        for (int s = 1; s < numSections; s++) {
+        // Calculate and store relative position and orientation of each section relative to the root
+        for (int s = 0; s < numSections; s++) {
             WingSection currSection = wingSections[s];
             
             twistTotal += currSection.twistLocal;
             sweepTotal += currSection.sweepLocal;
             dihedralTotal += currSection.dihedralLocal;
 
-            float boneLength = wingSections[s-1].boneLength;
+            float boneLength = wingSections[s].boneLength;
             float horizontalLength = boneLength * Mathf.Cos(dihedralTotal * Mathf.Deg2Rad);
 
             //float x = xPrev + horizontalLength * Mathf.Sin(sweepTotal * Mathf.Deg2Rad);
@@ -61,21 +58,21 @@ public class WingPanelCreator : MonoBehaviour
             WingSection inSection = wingSections[s];
             WingSection outSection = wingSections[s+1];
 
-            int numPanels = numPanelsPerSurface; //numPanelsPerSection[s];
+            int numPanels = outSection.numPanels; //numPanelsPerSection[s];
 
-            Vector3 quarterChordAxis = outSection.quarterChordPosition - inSection.quarterChordPosition;
+            Vector3 quarterChordAxis = outSection.position - inSection.position;
             Vector3 perpendicularAxis = new Vector3(quarterChordAxis.x, quarterChordAxis.y, 0);
 
-            float panelWidth = perpendicularAxis.magnitude / numPanels;
+            float panelWidth = (float) perpendicularAxis.magnitude / numPanels;
 
 
             // Create p number of panels interpolating between the two sections
             for (int p = 0; p < numPanels; p++) {
 
-                float positionGradient = (p+0.5f) / numPanels;
-                float chordGradient = (float) p / (numPanels - 1);
+                float positionGradient = (float) (p+0.5f) / numPanels;
+                float chordGradient = (float) p / Mathf.Max(numPanels - 1, 1);
 
-                Vector3 panelPosition = Vector3.Lerp(inSection.quarterChordPosition, outSection.quarterChordPosition, positionGradient);
+                Vector3 panelPosition = Vector3.Lerp(inSection.position, outSection.position, positionGradient);
                 float panelChord = Mathf.Lerp(inSection.chord, outSection.chord, chordGradient);
                 float panelTwist = Mathf.Lerp(inSection.twistAbsolute, outSection.twistAbsolute, chordGradient);
                 float panelArea = panelChord * panelWidth;
@@ -108,6 +105,14 @@ public class WingPanelCreator : MonoBehaviour
         GameObject quad = Instantiate(quadPrefab, rootTransform);
         quad.transform.SetLocalPositionAndRotation(panel.positionRoot, panelRotation);
         quad.transform.localScale = new Vector3(width, 1, chord);
+
+        quadObjects.Add(quad);
+    }
+
+    public void DestroyDebugQuads() {
+        foreach (GameObject quad in quadObjects){
+            Destroy(quad);
+        }
     }
 
 }

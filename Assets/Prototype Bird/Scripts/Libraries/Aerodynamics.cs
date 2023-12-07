@@ -33,7 +33,7 @@ public static class Aerodynamics
         float alpha = Vector3.Angle(projectedVelocity, forward);
         float sign = -Mathf.Sign(Vector3.Dot(projectedVelocity, up));
 
-        return alpha * sign * rad2Deg;
+        return alpha * sign;
     }
 
 

@@ -5,6 +5,12 @@ using UnityEngine.InputSystem;
 
 public class BirdController : MonoBehaviour
 {
+
+    //Debug Variables
+    public Vector3 testVelocity;
+    public Vector3 testAngularVelocity;
+
+
     // Wing Data
     public WingData wingData;
 
@@ -56,7 +62,6 @@ public class BirdController : MonoBehaviour
     // State variable storage
     List<WingPanel> wingPanels;
 
-    Vector3 position;
     Vector3 velocityWorld;
     Vector3 velocityBody;
 
@@ -102,13 +107,12 @@ public class BirdController : MonoBehaviour
         wingSectionsL = wingData.CreateWingSections();
         wingSectionsR = wingData.CreateWingSections();
 
-        wingPanels = new List<WingPanel>();
-        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true));
-        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false));
+        // Create panels from wing sections
+        RebuildWingPanels();
 
         UpdateCG();
 
-        rb.velocity = cg.forward * initialSpeed;
+        //rb.velocity = cg.forward * initialSpeed;
     }
 
 
@@ -117,6 +121,8 @@ public class BirdController : MonoBehaviour
     void FixedUpdate() {
 
         UpdateStateVariables();
+
+        RebuildWingPanels();
 
 
         Vector3[] aeroForces = CalculateAerodynamics(wingPanels, velocityBody, localAngularVelocityRad);
@@ -127,11 +133,28 @@ public class BirdController : MonoBehaviour
         rb.AddRelativeForce(netLiftForce + netDragForce);
         rb.AddRelativeTorque(netMoment);
 
+        // Draw big vectors for lift and drag forces
+        Debug.DrawRay(cg.position, cg.TransformVector(netLiftForce), Color.green);
+        Debug.DrawRay(cg.position, cg.TransformVector(netDragForce), Color.red);
+
+        Debug.Log("Lift (N): " + netLiftForce.magnitude);
+        Debug.Log("Drag (N): " + netDragForce.magnitude);
+
     }
 
 
 
 
+    private void RebuildWingPanels() {
+
+        // Clear old debug quads
+        wingPanelCreator.DestroyDebugQuads();
+
+        // Clear old panels and create new ones, populate list
+        wingPanels = new List<WingPanel>();
+        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true));
+        //wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false));
+    }
 
 
 
@@ -159,7 +182,7 @@ public class BirdController : MonoBehaviour
             netDragForce += dragForce;
             // calculate moment around cg as cross product of lift&drag w panel position
             netMoment += -Vector3.Cross(liftForce + dragForce, panel.positionRoot + cgToRoot);
-            netMoment += pitchMoment;     
+            netMoment += pitchMoment;
         }
 
         return new Vector3[] { netLiftForce, netDragForce, netMoment };
@@ -170,11 +193,14 @@ public class BirdController : MonoBehaviour
 
     void UpdateStateVariables() {
         // Updates system state variables
-        position = cg.position;
-        velocityWorld = rb.velocity;
+
+        velocityWorld = testVelocity;//rb.velocity;
         velocityBody = cg.InverseTransformDirection(velocityWorld);
 
-        localAngularVelocityRad = transform.InverseTransformDirection(rb.angularVelocity);
+        //localAngularVelocityRad = transform.InverseTransformDirection(rb.angularVelocity);
+        localAngularVelocityRad = transform.InverseTransformDirection(testAngularVelocity);
+
+
         //yawRate = -localAngularVelocity.y;
         //pitchRate = localAngularVelocity.x;
         //rollRate = localAngularVelocity.z;

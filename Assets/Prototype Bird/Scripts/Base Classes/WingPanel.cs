@@ -36,6 +36,7 @@ public class WingPanel
         Vector3 totalVelocity = cgVelocity + rotationVelocity;
 
         float alpha = Aerodynamics.Alpha(totalVelocity, forward, up, out Vector3 planeVelocity);
+        Debug.Log("Alpha: " + alpha);
 
         float CL = airfoil.GetLiftCoefficient(alpha);
         float CD = airfoil.GetDragCoefficient(alpha);

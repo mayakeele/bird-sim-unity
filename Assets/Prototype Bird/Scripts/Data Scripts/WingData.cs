@@ -13,6 +13,12 @@ public class WingData : ScriptableObject
 
         public float chord; // Chord of the airfoil at the root of this section
         public float boneLength; // Length of the line connecting this quarter-chord to the next section
+
+        public float initialDihedralLocal;
+        public float initialSweepLocal;
+        public float initialTwistLocal;
+
+        public int numPanelsInward; // Number of panels between the previous section and this section. Does not apply to first section
     }
 
     public SectionData[] wingSectionData;
@@ -27,7 +33,10 @@ public class WingData : ScriptableObject
 
         for(int i=0; i<numSections; i++) {
             SectionData section = wingSectionData[i];
-            wingSections.Add(new WingSection(section.airfoil, section.chord, section.boneLength));
+            wingSections.Add(
+                new WingSection(section.airfoil, section.chord, section.boneLength, 
+                section.initialDihedralLocal, section.initialSweepLocal, section.initialTwistLocal, 
+                section.numPanelsInward));
         }
 
         return wingSections;
