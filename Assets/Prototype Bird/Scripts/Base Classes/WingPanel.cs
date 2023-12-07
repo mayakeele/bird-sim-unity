@@ -27,7 +27,7 @@ public class WingPanel
 
 
 
-    public Vector3[] CalculateLiftDragPitch(Vector3 panelVelocityLocal, float density) {
+    public Vector3[] CalculateAerodynamicLoads(Vector3 panelVelocityLocal, float density) {
         // Returns a float array with three values: [0] is the lift force, [1] is the drag force and [2] is the pitching moment
 
 

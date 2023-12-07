@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wingSectionData:
   - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
-    chord: 0.18
+    chord: 0.21
     boneLength: 0
     initialDihedralLocal: 0
     initialSweepLocal: 0
-    initialTwistLocal: 5
+    initialTwistLocal: 2
     numPanelsInward: 0
   - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
-    chord: 0.17
-    boneLength: 0.35
-    initialDihedralLocal: 5
+    chord: 0.18
+    boneLength: 0.4
+    initialDihedralLocal: 0
     initialSweepLocal: 0
     initialTwistLocal: 0
-    numPanelsInward: 9
+    numPanelsInward: 12
   - airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
-    chord: 0.05
-    boneLength: 0.22
-    initialDihedralLocal: 6
+    chord: 0.06
+    boneLength: 0.26
+    initialDihedralLocal: 0
     initialSweepLocal: 0
     initialTwistLocal: 0
-    numPanelsInward: 6
+    numPanelsInward: 8

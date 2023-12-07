@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e454b1926126775439059017387e2622, type: 3}
-  m_Name: Bald Eagle Tail
+  m_Name: Test Tail
   m_EditorClassIdentifier: 
   liftCurve:
     serializedVersion: 2
@@ -25,8 +25,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -35
-      value: -1.1919
+      time: -40
+      value: -1.37
       inSlope: 0
       outSlope: 0.0411
       tangentMode: 0
@@ -34,8 +34,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -18
-      value: -0.4932
+      time: -20
+      value: -0.548
       inSlope: 0.0411
       outSlope: 0.0274
       tangentMode: 0
@@ -52,8 +52,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 18
-      value: 0.4932
+      time: 20
+      value: 0.548
       inSlope: 0.0274
       outSlope: 0.0411
       tangentMode: 0
@@ -61,8 +61,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 35
-      value: 1.1919
+      time: 40
+      value: 1.37
       inSlope: 0.0411
       outSlope: 0
       tangentMode: 0
@@ -88,12 +88,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   generateCurves: 0
-  mainChord: 0.18
-  minSpreadAngle: 35
+  mainChord: 0.25
+  minSpreadAngle: 30
   maxSpreadAngle: 160
   liftEfficiency: 1
   vortexLiftSlopeMultiplier: 1.5
-  alphaVortex: 18
-  alphaStall: 35
-  CDParasitic: 0
+  alphaVortex: 20
+  alphaStall: 40
+  CDParasitic: 0.01
   CDMax: 2

@@ -9,33 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c071b8c11b0e4742bbd163e91ff58ce, type: 3}
-  m_Name: EagleTail
+  m_Script: {fileID: 11500000, guid: e454b1926126775439059017387e2622, type: 3}
+  m_Name: No tail
   m_EditorClassIdentifier: 
   liftCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 1
+      time: -90
       value: 0
-      inSlope: 0.09
-      outSlope: 0.09
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 14
-      value: 1.1700001
-      inSlope: 0.09
-      outSlope: 0.09
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 29.5
-      value: 0.99
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -43,9 +25,45 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 45
-      value: 1.1
+      time: -40
+      value: -1.37
       inSlope: 0
+      outSlope: 0.0411
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: -20
+      value: -0.548
+      inSlope: 0.0411
+      outSlope: 0.0274
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.0274
+      outSlope: 0.0274
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 20
+      value: 0.548
+      inSlope: 0.0274
+      outSlope: 0.0411
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 40
+      value: 1.37
+      inSlope: 0.0411
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
@@ -54,7 +72,7 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 90
       value: 0
-      inSlope: -0.024444444
+      inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
@@ -65,47 +83,17 @@ MonoBehaviour:
     m_RotationOrder: 4
   dragCurve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 14
-      value: 0.1452448
-      inSlope: 0.038197186
-      outSlope: 0.061967243
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 90
-      value: 2.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   generateCurves: 0
-  liftCurveSlopeLinear: 0.09
-  alphaZeroLift: 1
-  alphaNonlinear: 14
-  alphaStall: 14
-  CLStall: 1.2
-  alphaPostStallPeak: 45
-  CLPostStallPeak: 1.1
-  parasiticDrag: 0
-  wingAspectRatio: 3
-  spanwiseEfficiencyFactor: 1
-  CDMax: 2.5
-  pitchingMoment: -0.01
+  mainChord: 0
+  minSpreadAngle: 10
+  maxSpreadAngle: 160
+  liftEfficiency: 1
+  vortexLiftSlopeMultiplier: 1.5
+  alphaVortex: 20
+  alphaStall: 40
+  CDParasitic: 0
+  CDMax: 2

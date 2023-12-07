@@ -28,9 +28,6 @@ public class TailData : ScriptableObject
     public float CDParasitic = 0.01f;
     public float CDMax = 2.0f;
 
-    [Space]
-    [Header("Pitching Moment Properties")]
-    public float pitchingMoment = -0.01f;
 
 
     public AnimationCurve GenerateLiftCurve() {
@@ -109,53 +106,31 @@ public class TailData : ScriptableObject
     }
 
 
-    /*public Vector3[] CalculateLiftDragPitch(Vector3 panelVelocityLocal, float density) {
-        // Returns a float array with three values: [0] is the lift force, [1] is the drag force and [2] is the pitching moment
-
-
-        float alpha = Aerodynamics.Alpha(panelVelocityLocal, forward, up, out Vector3 planeVelocity);
-        //Debug.Log("Alpha: " + alpha);
-
-        float CL = airfoil.GetLiftCoefficient(alpha);
-        float CD = airfoil.GetDragCoefficient(alpha);
-        float CM = airfoil.pitchingMoment;
-
-        float vSquared = planeVelocity.sqrMagnitude;
-
-        float liftForce = Aerodynamics.LiftForce(CL, vSquared, area, density);
-        float dragForce = Aerodynamics.DragForce(CD, vSquared, area, density);
-        float pitchingMoment = Aerodynamics.PitchingMoment(CM, vSquared, area, chord, density);
-
-        Vector3 liftDirection = Vector3.Cross(left, panelVelocityLocal).normalized;
-        Vector3 dragDirection = -panelVelocityLocal.normalized;
-
-        return new Vector3[] { liftForce * liftDirection, dragForce * dragDirection, pitchingMoment * left };
-    }*/
-
-
     public float LiftForce(float alphaDeg, float vSquared, float span, float density) {
         float CL = liftCurve.Evaluate(alphaDeg);
-        return 0.5f * density * vSquared * CL * span*span;
+        return 0.5f * density * vSquared * CL * span * span;
     }
 
+
     public float DragForce(float alphaDeg, float vSquared, float tailArea, float density, float liftForce) {
-        float alphaAbs = Mathf.Abs(alphaDeg);
+        alphaDeg = Mathf.Abs(alphaDeg);
+        liftForce = Mathf.Abs(liftForce);
 
         float parasiticDrag = 0.5f * density * vSquared * tailArea * CDParasitic;
 
-        if (alphaAbs <= alphaStall) {
+        if (alphaDeg <= alphaStall) {
             float inducedDrag = 0.5f * liftForce * alphaDeg * Mathf.Deg2Rad;
             return inducedDrag + parasiticDrag;
         }
-        else if (alphaAbs <= 90) {
-            float tangentClamped = Mathf.Abs(Mathf.Tan(alphaAbs * Mathf.Deg2Rad));
+        else if (alphaDeg <= 90) {
+            float tangentClamped = Mathf.Abs(Mathf.Tan(alphaDeg * Mathf.Deg2Rad));
             float pressureDrag = liftForce * tangentClamped;
             return pressureDrag + parasiticDrag;
         }
         else {
-            float tangentClamped = Mathf.Abs(Mathf.Tan(alphaAbs * Mathf.Deg2Rad));
-            float pressureDrag = liftForce * tangentClamped;
+            float pressureDrag = 0.5f * density * vSquared * tailArea * CDMax;
             return pressureDrag + parasiticDrag;
         }
     }
+
 }

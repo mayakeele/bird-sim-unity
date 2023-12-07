@@ -7,12 +7,14 @@ public class BirdController : MonoBehaviour
 {
 
     //Debug Variables
+    public bool inWindTunnel;
     public Vector3 testVelocity;
     public Vector3 testAngularVelocity;
 
 
-    // Wing Data
+    // Wing & Tail Data
     public WingData wingData;
+    public TailData tailData;
 
     // Component references
     public Rigidbody rb;
@@ -23,16 +25,15 @@ public class BirdController : MonoBehaviour
     public CameraFollow cameraFollow;
     
 
-
-    // Wing geometry
+    // Geometry
     public Transform wingRoot;
-    public List<WingSection> wingSectionsL;
-    public List<WingSection> wingSectionsR; 
+    public Transform tailRoot;
+
 
 
     // Simulation Constants
     const float g = 9.81f;
-    const float rho = 1.225f; // Sea level air density (kg/m^3)
+    const float localAirDensity = 1.225f; // Sea level air density (kg/m^3)
     const float deg2Rad = Mathf.Deg2Rad;
     const float rad2Deg = Mathf.Rad2Deg;
 
@@ -59,26 +60,45 @@ public class BirdController : MonoBehaviour
 
 
 
-    // State variable storage
+
+    // Aerodynamic section storage
+
+    List<WingSection> wingSectionsL;
+    List<WingSection> wingSectionsR;
     List<WingPanel> wingPanels;
 
+    TailPanel tailPanel;
+
+
+    // Velocity storage
     Vector3 velocityWorld;
     Vector3 velocityLocal;
 
     Vector3 angularVelocityWorld;
     Vector3 angularVelocityLocal;
+    //float yawRate;
+    //float pitchRate;
+    //float rollRate;
+
+
+    // Position storage
+    float bodyAlpha;
+    float bodyBeta;
 
     float yaw;
     float pitch;
     float roll;
 
-    //float yawRate;
-    //float pitchRate;
-    //float rollRate;
-    
 
-    float bodyAlpha;
-    float bodyBeta;
+    // Net aerodynamic loads
+    Vector3 wingLiftForce;
+    Vector3 wingDragForce;
+    Vector3 wingMoment;
+
+    Vector3 tailLiftForce;
+    Vector3 tailDragForce;
+    Vector3 tailMoment;
+
 
 
     // Input Storage
@@ -110,8 +130,12 @@ public class BirdController : MonoBehaviour
         wingSectionsL = wingData.CreateWingSections();
         wingSectionsR = wingData.CreateWingSections();
 
-        // Create panels from wing sections
+        // Create wing panels from wing sections
         RebuildWingPanels();
+
+        // Create tail panel
+        tailPanel = new TailPanel(tailData, tailRoot);
+
 
         UpdateCG();
 
@@ -123,29 +147,49 @@ public class BirdController : MonoBehaviour
 
     void FixedUpdate() {
 
-        UpdateStateVariables();
+        // Get user input and apply to geometry
+
+
+        // Update the state of the bird
+        UpdateVelocities();
+        UpdateCG();
 
         RebuildWingPanels();
 
 
-        Vector3[] aeroForces = CalculateAerodynamics(wingPanels, velocityLocal, angularVelocityLocal);
-        Vector3 netLiftForce = aeroForces[0];
-        Vector3 netDragForce = aeroForces[1];
-        Vector3 netMoment = aeroForces[2];
+        // Perform aerodynamic calculations
+        Vector3[] wingLoads = CalculateWingAerodynamics(wingPanels, velocityLocal, angularVelocityLocal);
+        Vector3[] tailLoads = CalculateTailAerodynamics(tailPanel, velocityLocal, angularVelocityLocal);
 
-        rb.AddRelativeForce(netLiftForce + netDragForce);
-        rb.AddRelativeTorque(netMoment);
+        wingLiftForce = wingLoads[0];
+        wingDragForce = wingLoads[1];
+        wingMoment = wingLoads[2];
 
-        // Draw big vectors for lift and drag forces
-        Debug.DrawRay(cg.position, cg.TransformVector(netLiftForce), Color.green);
-        Debug.DrawRay(cg.position, cg.TransformVector(netDragForce), Color.red);
-        Debug.DrawRay(cg.position, cg.TransformVector(netMoment), Color.blue);
+        tailLiftForce = tailLoads[0];
+        tailDragForce = tailLoads[1];   
+        tailMoment = tailLoads[2];
 
-        //Debug.Log("Lift (N): " + netLiftForce.magnitude);
+        rb.AddRelativeForce(wingLiftForce + wingDragForce + tailLiftForce + tailDragForce);
+        rb.AddRelativeTorque(wingMoment + tailMoment);
+
+        
+        //Debug.Log("Lift (N): " + wingLiftForce.magnitude);
         //Debug.Log("Drag (N): " + netDragForce.magnitude);
-        Debug.Log("Moment (Nm): " + netMoment.magnitude);
+        //Debug.Log("Moment (Nm): " + netMoment.magnitude);
+    }
 
 
+    void Update() {
+        // Wing lift drag moment vectors
+        Debug.DrawRay(cg.position, cg.TransformVector(wingLiftForce), Color.green);
+        Debug.DrawRay(cg.position, cg.TransformVector(wingDragForce), Color.red);
+        Debug.DrawRay(cg.position, cg.TransformVector(wingMoment), Color.blue);
+
+        // Tail lift drag moment vectors
+        Vector3 tailPosition = tailRoot.position + tailRoot.TransformVector(tailPanel.ACPosition);
+        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailLiftForce), Color.green);
+        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailDragForce), Color.red);
+        Debug.DrawRay(tailPosition, tailRoot.TransformVector(tailMoment), Color.blue);
     }
 
 
@@ -165,7 +209,8 @@ public class BirdController : MonoBehaviour
 
 
 
-    private Vector3[] CalculateAerodynamics(List<WingPanel> wingPanels, Vector3 cgVelocityLocal, Vector3 rotationRateLocal) {
+
+    private Vector3[] CalculateWingAerodynamics(List<WingPanel> wingPanels, Vector3 cgVelocityLocal, Vector3 rotationRateLocal) {
         // Runs aerodynamic calculations for all panels given.
         // Returns array of three vectors: [0] net lift force, [1] net drag force, [2] net moment
 
@@ -185,10 +230,10 @@ public class BirdController : MonoBehaviour
             Vector3 rotationVelocity = Vector3.Cross(rotationRateLocal, panelPosition);
 
 
-            Vector3[] aeroForces = panel.CalculateLiftDragPitch(cgVelocityLocal + rotationVelocity, rho);
-            Vector3 liftForce = aeroForces[0];
-            Vector3 dragForce = aeroForces[1];
-            Vector3 pitchMoment = aeroForces[2];
+            Vector3[] wingLoads = panel.CalculateAerodynamicLoads(cgVelocityLocal + rotationVelocity, localAirDensity);
+            Vector3 liftForce = wingLoads[0];
+            Vector3 dragForce = wingLoads[1];
+            Vector3 pitchMoment = wingLoads[2];
 
             // add to running total of force and moment
             netLiftForce += liftForce;
@@ -202,17 +247,43 @@ public class BirdController : MonoBehaviour
     }
 
 
+    private Vector3[] CalculateTailAerodynamics(TailPanel tail, Vector3 cgVelocityLocal, Vector3 rotationRateLocal) {
+        // Runs aerodynamic calculations for the tail.
+        // Returns array of three vectors: [0] net lift force, [1] net drag force, [2] net moment
+
+        // Get position of panel relative to cg
+        Vector3 cgToRoot = tailRoot.localPosition - cg.localPosition;
+        Vector3 panelPosition = tailPanel.ACPosition + cgToRoot;
+
+        // Calculate velocity at tail panel due to rotation
+        Vector3 rotationVelocity = Vector3.Cross(rotationRateLocal, panelPosition);
 
 
-    void UpdateStateVariables() {
+        Vector3[] tailLoads = tail.CalculateAerodynamicLoads(cgVelocityLocal + rotationVelocity, localAirDensity);
+        Vector3 liftForce = tailLoads[0];
+        Vector3 dragForce = tailLoads[1];
+
+
+        // calculate moment around cg as cross product of lift&drag w panel position
+        Vector3 netMoment = Vector3.Cross(tail.ACPosition + cgToRoot, liftForce + dragForce);
+        
+
+        return new Vector3[] { liftForce, dragForce, netMoment };
+    }
+
+
+
+
+
+    void UpdateVelocities() {
         // Updates system state variables
 
-        //velocityWorld = testVelocity;//rb.velocity;
-        velocityWorld = rb.velocity;
+        //velocityWorld = rb.velocity;
+        velocityWorld = inWindTunnel ? testVelocity : rb.velocity;
         velocityLocal = cg.InverseTransformDirection(velocityWorld);
 
         angularVelocityWorld = rb.angularVelocity;
-        angularVelocityLocal = cg.InverseTransformDirection(angularVelocityWorld);
+        angularVelocityLocal = cg.InverseTransformVector(angularVelocityWorld);
         //localAngularVelocityRad = transform.InverseTransformDirection(testAngularVelocity);
 
 

@@ -55,7 +55,7 @@ public class AirfoilData : ScriptableObject
         Keyframe key1a = new Keyframe(alphaNonlinear, yieldLift, liftCurveSlopeLinear, liftCurveSlopeLinear);
         curve.AddKey(key1a);
 
-        Keyframe key1b = new Keyframe(alphaZeroLift-alphaNonlinear, -yieldLift, liftCurveSlopeLinear, liftCurveSlopeLinear);
+        Keyframe key1b = new Keyframe(2*alphaZeroLift - alphaNonlinear, -yieldLift, liftCurveSlopeLinear, liftCurveSlopeLinear);
         curve.AddKey(key1b);
 
 
@@ -63,7 +63,7 @@ public class AirfoilData : ScriptableObject
         Keyframe key2a = new Keyframe(alphaStall, CLStall, 0, 0);
         curve.AddKey(key2a);
 
-        Keyframe key2b = new Keyframe(alphaZeroLift-alphaStall, -CLStall, 0, 0);
+        Keyframe key2b = new Keyframe(2*alphaZeroLift - alphaStall, -CLStall, 0, 0);
         curve.AddKey(key2b);
 
 
@@ -74,7 +74,7 @@ public class AirfoilData : ScriptableObject
         Keyframe key3a = new Keyframe(dropAlpha, dropCL);
         curve.AddKey(key3a);
 
-        Keyframe key3b = new Keyframe(alphaZeroLift-dropAlpha, -dropCL);
+        Keyframe key3b = new Keyframe(2*alphaZeroLift - dropAlpha, -dropCL);
         curve.AddKey(key3b);
 
 
@@ -82,7 +82,7 @@ public class AirfoilData : ScriptableObject
         Keyframe key4a = new Keyframe(alphaPostStallPeak, CLPostStallPeak, 0, 0);
         curve.AddKey(key4a);
 
-        Keyframe key4b = new Keyframe(alphaZeroLift-alphaPostStallPeak, -CLPostStallPeak, 0, 0);
+        Keyframe key4b = new Keyframe(2*alphaZeroLift - alphaPostStallPeak, -CLPostStallPeak, 0, 0);
         curve.AddKey(key4b);
 
 
@@ -115,14 +115,14 @@ public class AirfoilData : ScriptableObject
         float scaleFactor = 1 / (Mathf.PI * wingAspectRatio * spanwiseEfficiencyFactor);
         float dragPreStall = (maxLiftLinear * maxLiftLinear) * scaleFactor + parasiticDrag;
 
-        float leftSlope = 4 * scaleFactor * liftCurveSlopeLinear;
+        float leftSlope = 8 * scaleFactor * liftCurveSlopeLinear;
         float rightSlope = 2 * (CDMax - dragPreStall) / (90 - alphaStall);
 
 
-        Keyframe key1a = new Keyframe(alphaStall, dragPreStall, leftSlope, rightSlope);
+        Keyframe key1a = new Keyframe(alphaZeroLift + alphaStall, dragPreStall, leftSlope, rightSlope);
         curve.AddKey(key1a);
 
-        Keyframe key1b = new Keyframe(alphaZeroLift-alphaStall, dragPreStall, -leftSlope, -rightSlope);
+        Keyframe key1b = new Keyframe(alphaZeroLift - alphaStall, dragPreStall, -rightSlope, -leftSlope);
         curve.AddKey(key1b);
 
 
