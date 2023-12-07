@@ -54,6 +54,8 @@ public class BirdController : MonoBehaviour
 
 
     // State variable storage
+    List<WingPanel> wingPanels;
+
     Vector3 position;
     Vector3 velocityWorld;
     Vector3 velocityBody;
@@ -94,20 +96,54 @@ public class BirdController : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
     void Start() {
         // Create wing sections from geometry data
         wingSectionsL = wingData.CreateWingSections();
         wingSectionsR = wingData.CreateWingSections();
 
-        wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true);
-        wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false);
+        wingPanels = new List<WingPanel>();
+        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true));
+        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false));
+    }
+
+
+
+
+
+
+
+    void Update() {
 
     }
 
-    // Update is called once per frame
-    void Update() {
 
+
+
+
+
+
+
+    private Vector3[] CalculateAerodynamics(List<WingPanel> wingPanels, Vector3 cgVelocity, Vector3 rotationRate) {
+        // Runs aerodynamic calculations for all panels given.
+        // Returns array of three vectors: [0] net lift force, [1] net drag force, [2] net moment
+
+        Vector3 netForce = Vector3.zero;
+        Vector3 netMoment = Vector3.zero;
+
+        for(int i = 0; i < wingPanels.Count; i++) {
+            WingPanel panel = wingPanels[i];
+
+            Vector3[] aeroForces = panel.CalculateLiftDragPitch(cgVelocity, rotationRate, rho);
+            Vector3 liftForce = aeroForces[0];
+            Vector3 dragForce = aeroForces[1];
+            Vector3 pitchMoment = aeroForces[2];
+
+            // calculate moment around cg as cross product of lift&drag w panel position
+            // also add pitch moment
+            // add to running total of force and moment
+        }
+
+        return new Vector3[] { netForce, netMoment };
     }
 
 

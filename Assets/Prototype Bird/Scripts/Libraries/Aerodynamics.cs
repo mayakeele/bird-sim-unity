@@ -8,18 +8,36 @@ public static class Aerodynamics
     const float rad2Deg = Mathf.Rad2Deg;
 
 
-    public static float CalculateLift(float CL, float velocitySquared, float area, float density) {
+    public static float LiftForce(float CL, float velocitySquared, float area, float density) {
         return 0.5f * density * velocitySquared * area * CL;
+    }
+    public static float DragForce(float CD, float velocitySquared, float area, float density) {
+        return 0.5f * density * velocitySquared * area * CD;
+    }
+
+    public static float PitchingMoment(float CM, float velocitySquared, float area, float chord, float density) {
+        return 0.5f * density * velocitySquared * area * chord * CM;
     }
 
 
 
-
-    public static float CalculateAlpha(Vector3 localVelocity) {
+    public static float Alpha(Vector3 localVelocity) {
         float alpha = Mathf.Atan(-localVelocity.y / localVelocity.z);
         return alpha * rad2Deg;
     }
-    public static float CalculateBeta(Vector3 localVelocity) {
+    public static float Alpha(Vector3 velocity, Vector3 forward, Vector3 up, out Vector3 planeVelocity) {
+        Vector3 planeNormal = Vector3.Cross(forward, up);
+        Vector3 projectedVelocity = Vector3.ProjectOnPlane(velocity, planeNormal);
+        planeVelocity = projectedVelocity;
+
+        float alpha = Vector3.Angle(projectedVelocity, forward);
+        float sign = -Mathf.Sign(Vector3.Dot(projectedVelocity, up));
+
+        return alpha * sign * rad2Deg;
+    }
+
+
+    public static float Beta(Vector3 localVelocity) {
         float beta = Mathf.Asin(-localVelocity.x / localVelocity.magnitude);
         return beta * rad2Deg;
     }

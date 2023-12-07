@@ -119,4 +119,12 @@ public class AirfoilData : ScriptableObject
     }
 
 
+    public float GetLiftCoefficient(float alphaDeg) {
+        return liftCurve.Evaluate(alphaDeg);
+    }
+
+    public float GetDragCoefficient(float alphaDeg) {
+        return dragCurve.Evaluate(alphaDeg);
+    }
+
 }
