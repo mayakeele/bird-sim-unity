@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f41d129d4e62dc4ea002ba54a65c343, type: 3}
+  m_Name: Eagle Wing Data
+  m_EditorClassIdentifier: 
+  wingSectionData:
+  - chord: 0.2
+    boneLength: 0.4
+    airfoil: {fileID: 11400000, guid: e0e5d98b179bbe44c98c9acde42decf0, type: 2}
+  - chord: 0.2
+    boneLength: 0.3
+    airfoil: {fileID: 11400000, guid: 8e72bc0e8f18daa46a1d6eadbdf088ac, type: 2}
+  - chord: 0.05
+    boneLength: 0
+    airfoil: {fileID: 11400000, guid: 8e72bc0e8f18daa46a1d6eadbdf088ac, type: 2}

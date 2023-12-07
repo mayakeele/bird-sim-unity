@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(fileName = "Airfoil", menuName = "ScriptableObjects/Airfoil", order = 1)]
-public class Airfoil : ScriptableObject
+[CreateAssetMenu(fileName = "AirfoilData", menuName = "ScriptableObjects/AirfoilData", order = 1)]
+public class AirfoilData : ScriptableObject
 {
     public AnimationCurve liftCurve;
     public AnimationCurve dragCurve;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c071b8c11b0e4742bbd163e91ff58ce, type: 3}
-  m_Name: EagleOuterWing
+  m_Name: EagleWingtip
   m_EditorClassIdentifier: 
   liftCurve:
     serializedVersion: 2
@@ -72,7 +72,40 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  generateLiftCurve: 0
+  dragCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 18
+      value: 0.20798367
+      inSlope: 0.023342725
+      outSlope: 0.04977823
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 90
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  generateCurves: 0
   liftCurveSlopeLinear: 0.11
   alphaZeroLift: 0
   alphaNonlinear: 14
@@ -81,3 +114,6 @@ MonoBehaviour:
   alphaPostStallPeak: 45
   CLPostStallPeak: 1.1
   parasiticDrag: 0
+  wingAspectRatio: 6
+  spanwiseEfficiencyFactor: 1
+  CDMax: 2
