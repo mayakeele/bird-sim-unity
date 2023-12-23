@@ -10,9 +10,7 @@ public class TailData : ScriptableObject
 
     [Header("Geometric Properties")]
     public float mainChord;
-    [Space]
-    public float minSpreadAngle = 10f;
-    public float maxSpreadAngle = 160f;
+    public float rootWidth;
 
     [Space]
     [Header("Lift Properties")]
@@ -91,21 +89,20 @@ public class TailData : ScriptableObject
 
 
 
-    public float SpreadAngle(float spreadPercent) {
-        return Mathf.Lerp(minSpreadAngle, maxSpreadAngle, spreadPercent);
+    public float Span(float spreadAngle) {
+        return rootWidth + (mainChord * 2*Mathf.Sin(0.5f * spreadAngle * Mathf.Deg2Rad));
     }
 
-    public float Span(float spreadPercent) {
-        float angle = SpreadAngle(spreadPercent);
-
-        return mainChord * 2*Mathf.Sin(0.5f * angle * Mathf.Deg2Rad);
+    public float LiftCenterDistance(float spreadAngle) {
+        // Assume center of lift occurs at the widest chord location
+        return mainChord * 0.6667f * Mathf.Cos(0.5f * spreadAngle * Mathf.Deg2Rad);
     }
-
-    public float CPDistance(float spreadPercent) {
-        float angle = SpreadAngle(spreadPercent);
-
-        return mainChord * 0.6667f * Mathf.Cos(0.5f * angle * Mathf.Deg2Rad);
-    }
+    //public float DragCenterDistance(float spreadAngle) {
+    //    // Assume center of drag is at the centroid of the tail area
+    //    float rectArea = rootWidth * mainChord;
+    //    float rectCentroid = 
+    //    return mainChord * 0.6667f * Mathf.Cos(0.5f * angle * Mathf.Deg2Rad);
+    //}
 
 
     public float LiftForce(float alphaDeg, float vSquared, float span, float density) {

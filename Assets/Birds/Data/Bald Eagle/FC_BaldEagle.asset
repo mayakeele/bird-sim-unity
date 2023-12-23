@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74c3df15562766469393c64d783fcd4, type: 3}
+  m_Name: FC_BaldEagle
+  m_EditorClassIdentifier: 
+  cruiseWingData: {fileID: 11400000, guid: b1b2c6cbeb810c24492ac2187be63d55, type: 2}
+  cruiseTailData: {fileID: 11400000, guid: 89c999ae5264c9049b151cee65c2c6af, type: 2}
+  maneuverWingData: {fileID: 11400000, guid: 2b872b89b3a58f545a0f114edcb52221, type: 2}
+  maneuverTailData: {fileID: 11400000, guid: 8e616d6e3741aa34daa4d1ac817d367f, type: 2}
+  maneuverWingInterpPower: 1
+  maneuverTailInterpPower: 1
+  tuckedWingData: {fileID: 11400000, guid: 44dc0c111b19ee843b9727c89a037d58, type: 2}
+  tuckedTailData: {fileID: 11400000, guid: ed08ac20932e503458aed0068847c66e, type: 2}
+  tuckedWingInterpPower: 1
+  tuckedTailInterpPower: 1
+  singleWingMass: 0
+  bodyMass: 0
+  bodyDiameter: 0
+  bodyForeDist: 0
+  bodyAftDistance: 0
+  legsMass: 0
+  legsLength: 0
+  legsAftDistance: 0

@@ -29,13 +29,13 @@ public class TailPanel
     }
 
 
-    public void SetSpread(float spreadPercent) {
-        this.spreadPercent = spreadPercent;
-        spreadAngle = tailData.SpreadAngle(spreadPercent);
-        span = tailData.Span(spreadPercent);
+    public void SetSpread(float spreadAngle) {
+        span = tailData.Span(spreadAngle);
 
         UpdateCenterPosition();
     }
+
+
 
     public void SetAngles(float pitch, float roll) {
         Quaternion pitchRotation = Quaternion.AngleAxis(pitch, Vector3.left);

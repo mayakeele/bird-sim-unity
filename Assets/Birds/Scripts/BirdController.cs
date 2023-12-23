@@ -24,8 +24,9 @@ public class BirdController : MonoBehaviour
     public float wingtipTwistRate;
 
     // Wing & Tail Data
-    public WingData wingData;
-    public TailData tailData;
+    public FlightConfigurations flightConfigurations;
+    //public WingData wingData;
+    //public TailData tailData;
     [Space]
 
     // Geometry
@@ -69,6 +70,10 @@ public class BirdController : MonoBehaviour
     List<WingPanel> wingPanels;
 
     TailPanel tailPanel;
+
+    // LORD FORGIVE ME DELETE LATER PLEASE
+    float AR_L;
+    float AR_R;
 
 
     // Velocity storage
@@ -127,6 +132,12 @@ public class BirdController : MonoBehaviour
         // Setup input system
         inputActionAsset = new BirdInputActions();
         input = inputActionAsset.gameplay;
+
+        
+        int numSections = flightConfigurations.cruiseWingData.wingSectionData.Length;
+        if (flightConfigurations.maneuverWingData.wingSectionData.Length != numSections || flightConfigurations.tuckedWingData.wingSectionData.Length != numSections) {
+            Debug.LogError("All wing configurations must have the same number of sections.");
+        }
     }
 
 
@@ -134,11 +145,11 @@ public class BirdController : MonoBehaviour
         maxForce = maxGLoading * g * rb.mass;
 
         // Create wing sections from geometry data
-        wingSectionsL = wingData.CreateWingSections(0);
-        wingSectionsR = wingData.CreateWingSections(0);
+        wingSectionsL = flightConfigurations.InterpolateWingSections(0, true, out float AR_L);
+        wingSectionsR = flightConfigurations.InterpolateWingSections(0, false, out float AR_R);
 
         // Create tail panel
-        tailPanel = new TailPanel(tailData, tailRoot);
+        tailPanel = new TailPanel(flightConfigurations.cruiseTailData, tailRoot);
 
         // Create wing panels from wing sections
         RecalculateWingPanels();
@@ -157,8 +168,8 @@ public class BirdController : MonoBehaviour
 
         ReadInputs();
 
-        wingSectionsL = wingData.CreateWingSections(flightConfigurationInput);
-        wingSectionsR = wingData.CreateWingSections(flightConfigurationInput);
+        wingSectionsL = flightConfigurations.InterpolateWingSections(flightConfigurationInput, true, out float AR_L);
+        wingSectionsR = flightConfigurations.InterpolateWingSections(flightConfigurationInput, false, out float AR_R);
 
         // Move target angles towards target
         wingtipTwistL = wingtipTwistL.MoveTowards(wingtipTwistRange.GetAngle(rollInput), wingtipTwistRate * Time.fixedDeltaTime);
@@ -167,8 +178,8 @@ public class BirdController : MonoBehaviour
         tailRoll = tailRoll.MoveTowards(tailRollRange.GetAngle(-yawInput), tailRollRate * Time.fixedDeltaTime);
 
         // Update surface angles
-        wingSectionsL[wingtipSectionIndex].twistLocal = wingtipTwistL;
-        wingSectionsR[wingtipSectionIndex].twistLocal = wingtipTwistR;
+        wingSectionsL[wingtipSectionIndex].twistControlOffset = wingtipTwistL;
+        wingSectionsR[wingtipSectionIndex].twistControlOffset = wingtipTwistR;
         tailPanel.SetAngles(tailPitch, tailRoll);
 
 
@@ -240,8 +251,8 @@ public class BirdController : MonoBehaviour
 
         // Create new ones, populate list
         wingPanels = new List<WingPanel>();
-        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true));
-        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false));
+        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsL, wingRoot, true, AR_L));
+        wingPanels.AddRange(wingPanelCreator.CreateWingPanels(wingSectionsR, wingRoot, false, AR_R));
 
         // also make tail panel
         wingPanelCreator.CreateTailQuad(tailPanel, tailRoot);

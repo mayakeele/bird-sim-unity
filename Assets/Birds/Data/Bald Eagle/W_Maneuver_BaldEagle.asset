@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f41d129d4e62dc4ea002ba54a65c343, type: 3}
-  m_Name: W_BaldEagle
+  m_Name: W_Maneuver_BaldEagle
   m_EditorClassIdentifier: 
   wingSectionData: []
